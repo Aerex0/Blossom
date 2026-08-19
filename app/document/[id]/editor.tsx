@@ -5,8 +5,6 @@ import { useRouter } from "next/navigation";
 import { signOut } from "next-auth/react";
 import { useEditor, useEditorState, EditorContent } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
-import Underline from "@tiptap/extension-underline";
-import LinkExtension from "@tiptap/extension-link";
 import Placeholder from "@tiptap/extension-placeholder";
 import Collaboration from "@tiptap/extension-collaboration";
 import CollaborationCaret from "@tiptap/extension-collaboration-caret";
@@ -64,6 +62,7 @@ export function EditorClient({
   members,
   currentUserId,
   currentUserName,
+  shareId,
 }: {
   docId: string;
   initialTitle: string;
@@ -73,6 +72,7 @@ export function EditorClient({
   members: Member[];
   currentUserId: string;
   currentUserName: string;
+  shareId: string | null;
 }) {
   const router = useRouter();
   const [provider, setProvider] = useState<WebsocketProvider | null>(null);
@@ -94,8 +94,9 @@ export function EditorClient({
 
     async function init() {
       try {
+        const shareParam = shareId ? `&share=${encodeURIComponent(shareId)}` : "";
         const res = await fetch(
-          `/api/collab/token?docId=${encodeURIComponent(docId)}`,
+          `/api/collab/token?docId=${encodeURIComponent(docId)}${shareParam}`,
         );
         if (!res.ok) {
           if (!cancelled) setStatus("error");
@@ -106,7 +107,7 @@ export function EditorClient({
 
         doc = new Y.Doc();
         prov = new WebsocketProvider(WS_URL, docId, doc, {
-          params: { token },
+          params: shareId ? { token, share: shareId } : { token },
           connect: false,
         });
         prov.awareness.setLocalStateField("user", {
@@ -136,7 +137,7 @@ export function EditorClient({
       doc?.destroy();
       setProvider(null);
     };
-  }, [docId, currentUserName, userColor]);
+  }, [docId, shareId, currentUserName, userColor]);
 
   useEffect(() => {
     if (!provider) return;
@@ -270,9 +271,10 @@ function EditorWorkspace({
   const editor = useEditor(
     {
       extensions: [
-        StarterKit.configure({ undoRedo: false }),
-        Underline,
-        LinkExtension.configure({ openOnClick: false }),
+        StarterKit.configure({
+          undoRedo: false,
+          link: { openOnClick: false },
+        }),
         Placeholder.configure({ placeholder: "Start typing…" }),
         Collaboration.configure({
           document: provider.doc,
@@ -852,6 +854,58 @@ function ShareDialog({
   const [role, setRole] = useState("EDITOR");
   const [error, setError] = useState<string | null>(null);
   const [sharing, setSharing] = useState(false);
+  const [shareLinks, setShareLinks] = useState<{ id: string; role: string }[]>([]);
+  const [linkRole, setLinkRole] = useState("VIEWER");
+  const [linkBusy, setLinkBusy] = useState(false);
+  const [copiedId, setCopiedId] = useState<string | null>(null);
+
+  useEffect(() => {
+    if (!isOwner) return;
+    let cancelled = false;
+    fetch(`/api/documents/${docId}/share-link`)
+      .then((res) => (res.ok ? res.json() : { shares: [] }))
+      .then((data) => {
+        if (!cancelled) setShareLinks(data.shares);
+      })
+      .catch(() => {});
+    return () => {
+      cancelled = true;
+    };
+  }, [docId, isOwner]);
+
+  async function createShareLink() {
+    setLinkBusy(true);
+    const res = await fetch(`/api/documents/${docId}/share-link`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ role: linkRole }),
+    });
+    setLinkBusy(false);
+    if (res.ok) {
+      const { share } = await res.json();
+      setShareLinks((prev) => [...prev, share]);
+    }
+  }
+
+  async function revokeShareLink(shareId: string) {
+    const res = await fetch(`/api/documents/${docId}/share-link/${shareId}`, {
+      method: "DELETE",
+    });
+    if (res.ok) {
+      setShareLinks((prev) => prev.filter((s) => s.id !== shareId));
+    }
+  }
+
+  async function copyShareLink(shareId: string) {
+    const url = `${window.location.origin}/s/${shareId}`;
+    try {
+      await navigator.clipboard.writeText(url);
+      setCopiedId(shareId);
+      setTimeout(() => setCopiedId(null), 1500);
+    } catch {
+      // clipboard unavailable; ignore
+    }
+  }
 
   async function addMember() {
     if (!email.trim()) return;
@@ -910,31 +964,93 @@ function ShareDialog({
 
         <div className="p-5">
           {isOwner ? (
-            <div className="mb-5 flex gap-2">
-              <input
-                type="email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                placeholder="Email address"
-                className="min-w-0 flex-1 rounded-lg border border-white/15 bg-white/10 px-3 py-2 text-sm text-ink placeholder:text-white/40 outline-none transition focus:border-accent/70 focus:ring-2 focus:ring-accent/25"
-              />
-              <select
-                value={role}
-                onChange={(e) => setRole(e.target.value)}
-                className="rounded-lg border border-white/15 bg-white/10 px-2 py-2 text-sm text-ink outline-none transition focus:border-accent/70"
-                aria-label="Role"
-              >
-                <option value="EDITOR" className="bg-canvas text-ink">Can edit</option>
-                <option value="VIEWER" className="bg-canvas text-ink">Can view</option>
-              </select>
-              <button
-                onClick={() => void addMember()}
-                disabled={sharing || !email.trim()}
-                className="shrink-0 rounded-lg bg-accent px-4 py-2 text-sm font-semibold text-[#0d1f21] transition hover:bg-accent-dark disabled:opacity-40"
-              >
-                {sharing ? "Adding…" : "Add"}
-              </button>
-            </div>
+            <>
+              <div className="mb-5 flex gap-2">
+                <input
+                  type="email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  placeholder="Email address"
+                  className="min-w-0 flex-1 rounded-lg border border-white/15 bg-white/10 px-3 py-2 text-sm text-ink placeholder:text-white/40 outline-none transition focus:border-accent/70 focus:ring-2 focus:ring-accent/25"
+                />
+                <select
+                  value={role}
+                  onChange={(e) => setRole(e.target.value)}
+                  className="rounded-lg border border-white/15 bg-white/10 px-2 py-2 text-sm text-ink outline-none transition focus:border-accent/70"
+                  aria-label="Role"
+                >
+                  <option value="EDITOR" className="bg-canvas text-ink">Can edit</option>
+                  <option value="VIEWER" className="bg-canvas text-ink">Can view</option>
+                </select>
+                <button
+                  onClick={() => void addMember()}
+                  disabled={sharing || !email.trim()}
+                  className="shrink-0 rounded-lg bg-accent px-4 py-2 text-sm font-semibold text-[#0d1f21] transition hover:bg-accent-dark disabled:opacity-40"
+                >
+                  {sharing ? "Adding…" : "Add"}
+                </button>
+              </div>
+
+              <div className="mb-5 border-t border-white/10 pt-4">
+                <p className="mb-2 text-xs font-semibold uppercase tracking-[0.14em] text-white/40">
+                  Anyone with the link
+                </p>
+                {shareLinks.length === 0 ? (
+                  <div className="flex gap-2">
+                    <select
+                      value={linkRole}
+                      onChange={(e) => setLinkRole(e.target.value)}
+                      className="rounded-lg border border-white/15 bg-white/10 px-2 py-2 text-sm text-ink outline-none transition focus:border-accent/70"
+                      aria-label="Link role"
+                    >
+                      <option value="VIEWER" className="bg-canvas text-ink">Can view</option>
+                      <option value="EDITOR" className="bg-canvas text-ink">Can edit</option>
+                    </select>
+                    <button
+                      onClick={() => void createShareLink()}
+                      disabled={linkBusy}
+                      className="shrink-0 rounded-lg bg-accent px-4 py-2 text-sm font-semibold text-[#0d1f21] transition hover:bg-accent-dark disabled:opacity-40"
+                    >
+                      {linkBusy ? "Creating…" : "Create link"}
+                    </button>
+                  </div>
+                ) : (
+                  <ul className="flex flex-col gap-2">
+                    {shareLinks.map((link) => (
+                      <li
+                        key={link.id}
+                        className="flex items-center gap-2 rounded-lg border border-white/10 bg-white/5 px-3 py-2"
+                      >
+                        <span className="min-w-0 flex-1 truncate text-xs text-white/60">
+                          {window.location.origin}/s/{link.id}
+                        </span>
+                        <span
+                          className={`shrink-0 rounded-full px-2 py-0.5 text-[10px] font-medium ${
+                            link.role === "EDITOR"
+                              ? "bg-accent/20 text-accent"
+                              : "bg-white/10 text-white/60"
+                          }`}
+                        >
+                          {link.role === "EDITOR" ? "Can edit" : "Can view"}
+                        </span>
+                        <button
+                          onClick={() => void copyShareLink(link.id)}
+                          className="shrink-0 rounded-md px-2 py-1 text-xs font-medium text-white/70 transition hover:bg-white/10 hover:text-white"
+                        >
+                          {copiedId === link.id ? "Copied!" : "Copy"}
+                        </button>
+                        <button
+                          onClick={() => void revokeShareLink(link.id)}
+                          className="shrink-0 rounded-md px-2 py-1 text-xs text-white/40 transition hover:bg-danger/15 hover:text-danger"
+                        >
+                          Restrict
+                        </button>
+                      </li>
+                    ))}
+                  </ul>
+                )}
+              </div>
+            </>
           ) : (
             <p className="mb-5 rounded-lg bg-white/10 px-3 py-2 text-sm text-white/70">
               Only the owner can add or remove members.

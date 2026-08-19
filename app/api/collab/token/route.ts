@@ -18,13 +18,33 @@ export async function GET(request: Request) {
   const member = await prisma.documentMember.findUnique({
     where: { documentId_userId: { documentId: docId, userId: session.user.id } },
   });
-  if (!member) {
+
+  let role = member?.role;
+
+  // Not a member? Allow access via a valid share link.
+  if (!role) {
+    const shareId = searchParams.get("share");
+    if (shareId) {
+      const share = await prisma.documentShare.findUnique({
+        where: { id: shareId },
+      });
+      if (share && share.documentId === docId) {
+        role = share.role;
+      }
+    }
+  }
+
+  if (!role) {
     return NextResponse.json(
       { error: "You do not have access to this document." },
       { status: 403 },
     );
   }
 
-  const token = await signCollabToken({ sub: session.user.id, docId });
+  const token = await signCollabToken({
+    sub: session.user.id,
+    docId,
+    role,
+  });
   return NextResponse.json({ token });
 }
