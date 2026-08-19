@@ -164,4 +164,4 @@ Document content is never stored as a whole. The collaboration server writes inc
 
 ## License
 
-Private project.
+[MIT](LICENSE) — free to use, modify and distribute.
