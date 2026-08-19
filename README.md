@@ -104,7 +104,7 @@ Open [http://localhost:3000](http://localhost:3000). Create an account, create a
 | `npm run lint` | Run ESLint |
 | `npm run typecheck` | Run TypeScript type checking |
 | `npm run db:generate` | Generate the Prisma client |
-| `npm run db:migrate` | Run Prisma migrations |
+| `npm run db:migrate` | Apply migrations with `prisma migrate dev` (local Postgres only; use `migrate deploy` against Supabase) |
 | `npm run db:studio` | Open Prisma Studio |
 
 ## Features
