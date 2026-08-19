@@ -24,17 +24,22 @@ Browser
 │            WebSocket (Yjs updates)  │
 │                                     ▼
 │                            Collaboration Server
+│                         (rooms, roles, persistence)
 │                                     │
 │                                     ▼
-│                            PostgreSQL (persisted state)
+│                        Supabase PostgreSQL
+│                ┌───────────┬───────────────┬─────────────┐
+│                │ documents │ yjs_updates   │ yjs_snapshots│
+│                │ members   │ shares        │ comments    │
+│                └───────────┴───────────────┴─────────────┘
 │
-├── REST API (documents, sharing, comments, auth)
+├── REST API (documents, sharing, share links, comments, auth)
 ```
 
 Two communication paths:
 
 - **Realtime path** — keystrokes flow Tiptap → ProseMirror → Yjs → WebSocket → collaboration server → other connected clients. Yjs handles concurrent edits, conflict resolution and convergence.
-- **Application path** — REST API calls for non-realtime operations (create/rename/delete documents, share, comments, auth).
+- **Application path** — REST API calls for non-realtime operations (create/rename/delete documents, share, share links, comments, auth).
 
 ## Getting Started
 
