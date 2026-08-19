@@ -1,26 +1,296 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
+@theme {
+  --color-canvas: #101514;
+  --color-surface: #171e1d;
+  --color-raised: #212b29;
+  --color-hairline: #2e3a38;
+  --color-paper: #faf6ee;
+  --color-paper-ink: #26231d;
+  --color-ink: #f2ede3;
+  --color-muted: #a8a294;
+  --color-faint: #6e6a60;
+  --color-accent: #5ca3aa;
+  --color-accent-dark: #41868f;
+  --color-sand: #d2b999;
+  --color-danger: #e2655a;
+  --font-sans: var(--font-onest), ui-sans-serif, system-ui, sans-serif;
+  --font-serif: var(--font-source-serif), Georgia, "Times New Roman", serif;
+  --font-mono: var(--font-geist-mono), ui-monospace, SFMono-Regular, monospace;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+html {
+  color-scheme: dark;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background: var(--color-canvas);
+  color: var(--color-ink);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+::selection {
+  background: rgba(92, 163, 170, 0.3);
+}
+
+/* Fine paper grain over the whole workspace */
+body::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: 50;
+  pointer-events: none;
+  opacity: 0.035;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+/* Photo backdrop shared by login, signup, desk and editor */
+.photo-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background-image: url("/imgs/home-document-bg.jpeg");
+  background-size: cover;
+  background-position: center;
+}
+
+.photo-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background: linear-gradient(
+    to bottom,
+    rgba(8, 12, 12, 0.82),
+    rgba(8, 12, 12, 0.55) 45%,
+    rgba(8, 12, 12, 0.85)
+  );
+}
+
+/* ------- The document page: warm paper glowing in the dark ------- */
+.paper-page {
+  background-color: var(--color-paper);
+  color: var(--color-paper-ink);
+  background-image: radial-gradient(
+    120% 80% at 20% 0%,
+    rgba(92, 163, 170, 0.08),
+    transparent 60%
+  );
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.5),
+    0 1px 1px rgba(0, 0, 0, 0.2),
+    0 24px 48px -16px rgba(0, 0, 0, 0.75);
+  border-radius: 8px;
+}
+
+/* ------- Editor document typography ------- */
+.tiptap {
+  outline: none;
+  font-family: var(--font-serif);
+  font-size: 11.5pt;
+  line-height: 1.7;
+  color: var(--color-paper-ink);
+}
+
+.tiptap p {
+  margin: 0 0 0.85rem;
+}
+
+.tiptap h1 {
+  font-size: 2em;
+  font-weight: 500;
+  letter-spacing: -0.01em;
+  margin: 1.5rem 0 0.85rem;
+}
+
+.tiptap h2 {
+  font-size: 1.5em;
+  font-weight: 500;
+  letter-spacing: -0.01em;
+  margin: 1.25rem 0 0.75rem;
+}
+
+.tiptap h3 {
+  font-size: 1.2em;
+  font-weight: 600;
+  margin: 1rem 0 0.5rem;
+}
+
+.tiptap ul,
+.tiptap ol {
+  padding-left: 1.5rem;
+  margin-bottom: 0.85rem;
+}
+
+.tiptap ul {
+  list-style: disc;
+}
+
+.tiptap ol {
+  list-style: decimal;
+}
+
+.tiptap li > p {
+  margin-bottom: 0.3rem;
+}
+
+.tiptap a {
+  color: #36717a;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+  cursor: pointer;
+}
+
+.tiptap blockquote {
+  border-left: 3px solid #cbb893;
+  padding-left: 1.25rem;
+  margin: 0 0 0.85rem;
+  color: #5d5748;
+  font-style: italic;
+}
+
+.tiptap code {
+  background: #efe9d8;
+  padding: 0.1rem 0.3rem;
+  border-radius: 4px;
+  font-family: var(--font-mono);
+  font-size: 0.85em;
+}
+
+.tiptap pre {
+  background: #212b29;
+  color: #e8f0ee;
+  padding: 1rem 1.25rem;
+  border-radius: 6px;
+  margin-bottom: 0.85rem;
+  font-family: var(--font-mono);
+  font-size: 0.85rem;
+  white-space: pre-wrap;
+}
+
+.tiptap pre code {
+  background: none;
+  padding: 0;
+  color: inherit;
+}
+
+.tiptap hr {
+  border: none;
+  border-top: 1px solid #cbb893;
+  margin: 1.5rem 0;
+}
+
+.tiptap mark {
+  background: rgba(92, 163, 170, 0.35);
+  color: inherit;
+}
+
+.tiptap.ProseMirror-selectednode {
+  outline: 2px solid rgba(92, 163, 170, 0.7);
+}
+
+.tiptap p.is-editor-empty:first-child::before {
+  content: attr(data-placeholder);
+  color: #a79c86;
+  float: left;
+  height: 0;
+  pointer-events: none;
+}
+
+/* ------- Collaboration carets ------- */
+.tiptap .collaboration-carets__caret {
+  border-left: 1px solid currentColor;
+  border-right: 1px solid currentColor;
+  margin-left: -1px;
+  margin-right: -1px;
+  pointer-events: none;
+  position: relative;
+  word-break: normal;
+  box-sizing: border-box;
+}
+
+.tiptap .collaboration-carets__label {
+  border-radius: 3px 3px 3px 0;
+  color: #fff;
+  font-family: var(--font-sans);
+  font-size: 11px;
+  font-style: normal;
+  font-weight: 600;
+  left: -1px;
+  line-height: normal;
+  padding: 0.15rem 0.4rem;
+  position: absolute;
+  top: -1.6em;
+  user-select: none;
+  white-space: nowrap;
+  z-index: 10;
+}
+
+.tiptap .collaboration-carets__selection {
+  pointer-events: none;
+  position: relative;
+}
+
+/* ------- Scrollbars ------- */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: #2e3a38 transparent;
+}
+
+input,
+textarea,
+select,
+button {
+  font-family: inherit;
+}
+
+/* ------- Focus visibility ------- */
+:focus-visible:not([contenteditable="true"]) {
+  outline: 2px solid rgba(92, 163, 170, 0.6);
+  outline-offset: 2px;
+}
+
+@keyframes page-in {
+  from {
+    opacity: 0;
+    transform: translateY(10px) scale(0.995);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.animate-page-in {
+  animation: page-in 0.45s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+@keyframes badge-pop {
+  0% {
+    opacity: 0;
+    transform: scale(0.5) translateY(4px);
+  }
+  70% {
+    transform: scale(1.08) translateY(0);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.animate-badge-pop {
+  animation: badge-pop 0.4s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
 }
