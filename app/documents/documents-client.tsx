@@ -285,7 +285,7 @@ function PageThumbnail({ title }: { title: string }) {
   return (
     <svg viewBox="0 0 90 116" role="img" aria-label={title} className="h-full max-h-40 drop-shadow-[0_12px_24px_rgba(0,0,0,0.5)]">
       <title>{title}</title>
-      <rect x="1" y="1" width="88" height="114" rx="4" fill="#faf6ee" />
+      <rect x="1" y="1" width="88" height="114" rx="4" fill="#f1ead9" />
       <path d="M65 1v11h11" fill="#eadfc4" />
       <rect x="12" y="26" width="66" height="6" rx="3" fill="#d8c9a3" />
       <rect x="12" y="38" width="66" height="6" rx="3" fill="#e8dfc8" />

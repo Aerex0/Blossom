@@ -33,11 +33,20 @@ export function SignupForm() {
       return;
     }
 
-    const result = await signIn("credentials", {
-      email,
-      password,
-      redirect: false,
-    });
+    let result: Awaited<ReturnType<typeof signIn>> | undefined;
+    try {
+      result = await signIn("credentials", {
+        email,
+        password,
+        redirect: false,
+      });
+    } catch {
+      setError(
+        "Account created, but signing in failed. Make sure the database is running, then sign in manually.",
+      );
+      setLoading(false);
+      return;
+    }
 
     if (result?.error) {
       setError("Account created. Please sign in with your new credentials.");

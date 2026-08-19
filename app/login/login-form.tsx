@@ -20,11 +20,20 @@ export function LoginForm() {
     setError(null);
     setLoading(true);
 
-    const result = await signIn("credentials", {
-      email,
-      password,
-      redirect: false,
-    });
+    let result: Awaited<ReturnType<typeof signIn>> | undefined;
+    try {
+      result = await signIn("credentials", {
+        email,
+        password,
+        redirect: false,
+      });
+    } catch {
+      setError(
+        "Could not reach the server. Make sure the app and database are running.",
+      );
+      setLoading(false);
+      return;
+    }
 
     setLoading(false);
     if (result?.error) {

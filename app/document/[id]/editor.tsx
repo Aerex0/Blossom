@@ -598,6 +598,12 @@ function TopBar({
           value={title}
           onChange={(e) => onTitleChange(e.target.value)}
           onBlur={() => onTitleBlur()}
+          onKeyDown={(e) => {
+            if (e.key === "Enter") {
+              e.preventDefault();
+              (e.target as HTMLInputElement).blur();
+            }
+          }}
           aria-label="Document title"
           className="w-full max-w-[280px] truncate rounded-lg border border-transparent bg-transparent px-2 py-0.5 text-base font-medium text-ink outline-none transition hover:border-white/20 focus:border-accent/50 focus:bg-white/10"
         />

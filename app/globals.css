@@ -5,7 +5,7 @@
   --color-surface: #171e1d;
   --color-raised: #212b29;
   --color-hairline: #2e3a38;
-  --color-paper: #faf6ee;
+  --color-paper: #f1ead9;
   --color-paper-ink: #26231d;
   --color-ink: #f2ede3;
   --color-muted: #a8a294;
@@ -80,7 +80,7 @@ body::after {
     transparent 60%
   );
   box-shadow:
-    inset 0 1px 0 rgba(255, 255, 255, 0.5),
+    inset 0 1px 0 rgba(255, 255, 255, 0.35),
     0 1px 1px rgba(0, 0, 0, 0.2),
     0 24px 48px -16px rgba(0, 0, 0, 0.75);
   border-radius: 8px;
