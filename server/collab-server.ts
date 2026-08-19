@@ -174,8 +174,72 @@ async function loadDocument(docId: string): Promise<Room> {
   return room;
 }
 
+function processCollabMessage(
+  conn: WebSocket,
+  room: Room,
+  role: string,
+  message: Uint8Array,
+) {
+  const decoder = decoding.createDecoder(message);
+  const messageType = decoding.readVarUint(decoder);
+  const encoder = encoding.createEncoder();
+
+  switch (messageType) {
+    case messageSync: {
+      const syncMessageType = decoding.readVarUint(decoder);
+      switch (syncMessageType) {
+        case syncProtocol.messageYjsSyncStep1:
+          encoding.writeVarUint(encoder, messageSync);
+          syncProtocol.readSyncStep1(decoder, encoder, room.doc);
+          if (encoding.length(encoder) > 1) {
+            sendMessage(conn, encoding.toUint8Array(encoder));
+          }
+          break;
+        case syncProtocol.messageYjsSyncStep2:
+          syncProtocol.readSyncStep2(decoder, room.doc, conn);
+          break;
+        case syncProtocol.messageYjsUpdate:
+          if (role === "VIEWER") {
+            // Viewers can observe but not submit document updates.
+            break;
+          }
+          syncProtocol.readUpdate(decoder, room.doc, conn);
+          break;
+        default:
+          break;
+      }
+      break;
+    }
+    case messageAwareness: {
+      const update = decoding.readVarUint8Array(decoder);
+      awarenessProtocol.applyAwarenessUpdate(room.awareness, update, conn);
+      broadcastAwareness(room, null);
+      break;
+    }
+    default:
+      break;
+  }
+}
+
 async function setupConnection(conn: WebSocket, request: import("http").IncomingMessage) {
   conn.binaryType = "arraybuffer";
+
+  // Buffer messages received while the room is still loading, so the
+  // client's initial sync request is never lost (that would leave the
+  // client with an empty document).
+  const messageBuffer: Uint8Array[] = [];
+  let ready = false;
+  let roomRef: Room | null = null;
+  let roleRef = "VIEWER";
+
+  conn.on("message", (data) => {
+    const message = new Uint8Array(data as ArrayBuffer);
+    if (!ready || !roomRef) {
+      messageBuffer.push(message);
+      return;
+    }
+    processCollabMessage(conn, roomRef, roleRef, message);
+  });
 
   const url = new URL(request.url ?? "/", "http://localhost");
   const token = url.searchParams.get("token");
@@ -191,6 +255,7 @@ async function setupConnection(conn: WebSocket, request: import("http").Incoming
   }
 
   const { docId, sub: userId, role } = payload;
+  roleRef = role;
 
   // Server-side membership check; share-link holders are authorized by the
   // token (issued only after validating the link), re-checked here via the
@@ -216,6 +281,7 @@ async function setupConnection(conn: WebSocket, request: import("http").Incoming
     room = await loadDocument(docId);
     rooms.set(docId, room);
   }
+  roomRef = room;
 
   room.clients.add(conn);
 
@@ -234,48 +300,11 @@ async function setupConnection(conn: WebSocket, request: import("http").Incoming
     conn.close();
   });
 
-  conn.on("message", (data) => {
-    const message = new Uint8Array(data as ArrayBuffer);
-    const decoder = decoding.createDecoder(message);
-    const messageType = decoding.readVarUint(decoder);
-    const encoder = encoding.createEncoder();
-
-    switch (messageType) {
-      case messageSync: {
-        const syncMessageType = decoding.readVarUint(decoder);
-        switch (syncMessageType) {
-          case syncProtocol.messageYjsSyncStep1:
-            encoding.writeVarUint(encoder, messageSync);
-            syncProtocol.readSyncStep1(decoder, encoder, room.doc);
-            if (encoding.length(encoder) > 1) {
-              sendMessage(conn, encoding.toUint8Array(encoder));
-            }
-            break;
-          case syncProtocol.messageYjsSyncStep2:
-            syncProtocol.readSyncStep2(decoder, room.doc, conn);
-            break;
-          case syncProtocol.messageYjsUpdate:
-            if (role === "VIEWER") {
-              // Viewers can observe but not submit document updates.
-              break;
-            }
-            syncProtocol.readUpdate(decoder, room.doc, conn);
-            break;
-          default:
-            break;
-        }
-        break;
-      }
-      case messageAwareness: {
-        const update = decoding.readVarUint8Array(decoder);
-        awarenessProtocol.applyAwarenessUpdate(room.awareness, update, conn);
-        broadcastAwareness(room, null);
-        break;
-      }
-      default:
-        break;
-    }
-  });
+  // Replay any messages that arrived while the room was loading.
+  ready = true;
+  for (const message of messageBuffer) {
+    processCollabMessage(conn, room, role, message);
+  }
 
   const init = encoding.createEncoder();
   encoding.writeVarUint(init, messageSync);
