@@ -738,7 +738,7 @@ function CommentsPanel({
   }
 
   return (
-    <aside className="relative z-10 flex w-full max-w-xs shrink-0 flex-col border-l border-white/10 bg-black/40 backdrop-blur-xl sm:w-80">
+    <aside className="relative z-10 flex h-[calc(100dvh-15rem)] w-full max-w-xs shrink-0 flex-col border-l border-white/10 bg-black/40 backdrop-blur-xl sm:w-80">
       <div className="flex items-center justify-between border-b border-white/10 px-4 py-3">
         <h2 className="font-serif text-base font-medium text-ink">Comments</h2>
         <button
