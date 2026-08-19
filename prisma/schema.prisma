@@ -28,7 +28,6 @@ model User {
 model Document {
   id        String   @id @default(cuid())
   title     String   @default("Untitled document")
-  content   Bytes?
   ownerId   String
   owner     User     @relation(fields: [ownerId], references: [id], onDelete: Cascade)
   createdAt DateTime @default(now())
@@ -36,6 +35,9 @@ model Document {
 
   members  DocumentMember[]
   comments Comment[]
+  shares   DocumentShare[]
+  updates  YjsUpdate[]
+  snapshots YjsSnapshot[]
 }
 
 model DocumentMember {
@@ -48,6 +50,39 @@ model DocumentMember {
   document Document @relation(fields: [documentId], references: [id], onDelete: Cascade)
 
   @@id([documentId, userId])
+}
+
+model DocumentShare {
+  id         String   @id @default(cuid())
+  documentId String
+  role       Role     @default(VIEWER)
+  createdAt  DateTime @default(now())
+
+  document Document @relation(fields: [documentId], references: [id], onDelete: Cascade)
+
+  @@index([documentId])
+}
+
+model YjsUpdate {
+  id         String   @id @default(cuid())
+  documentId String
+  seq        BigInt   @default(autoincrement())
+  update     Bytes
+  createdAt  DateTime @default(now())
+
+  document Document @relation(fields: [documentId], references: [id], onDelete: Cascade)
+
+  @@index([documentId, seq])
+}
+
+model YjsSnapshot {
+  id         String   @id @default(cuid())
+  documentId String   @unique
+  seq        BigInt
+  snapshot   Bytes
+  createdAt  DateTime @default(now())
+
+  document Document @relation(fields: [documentId], references: [id], onDelete: Cascade)
 }
 
 model Comment {

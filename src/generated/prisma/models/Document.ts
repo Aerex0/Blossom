@@ -27,7 +27,6 @@ export type AggregateDocument = {
 export type DocumentMinAggregateOutputType = {
   id: string | null
   title: string | null
-  content: runtime.Bytes | null
   ownerId: string | null
   createdAt: Date | null
   updatedAt: Date | null
@@ -36,7 +35,6 @@ export type DocumentMinAggregateOutputType = {
 export type DocumentMaxAggregateOutputType = {
   id: string | null
   title: string | null
-  content: runtime.Bytes | null
   ownerId: string | null
   createdAt: Date | null
   updatedAt: Date | null
@@ -45,7 +43,6 @@ export type DocumentMaxAggregateOutputType = {
 export type DocumentCountAggregateOutputType = {
   id: number
   title: number
-  content: number
   ownerId: number
   createdAt: number
   updatedAt: number
@@ -56,7 +53,6 @@ export type DocumentCountAggregateOutputType = {
 export type DocumentMinAggregateInputType = {
   id?: true
   title?: true
-  content?: true
   ownerId?: true
   createdAt?: true
   updatedAt?: true
@@ -65,7 +61,6 @@ export type DocumentMinAggregateInputType = {
 export type DocumentMaxAggregateInputType = {
   id?: true
   title?: true
-  content?: true
   ownerId?: true
   createdAt?: true
   updatedAt?: true
@@ -74,7 +69,6 @@ export type DocumentMaxAggregateInputType = {
 export type DocumentCountAggregateInputType = {
   id?: true
   title?: true
-  content?: true
   ownerId?: true
   createdAt?: true
   updatedAt?: true
@@ -156,7 +150,6 @@ export type DocumentGroupByArgs<ExtArgs extends runtime.Types.Extensions.Interna
 export type DocumentGroupByOutputType = {
   id: string
   title: string
-  content: runtime.Bytes | null
   ownerId: string
   createdAt: Date
   updatedAt: Date
@@ -186,25 +179,29 @@ export type DocumentWhereInput = {
   NOT?: Prisma.DocumentWhereInput | Prisma.DocumentWhereInput[]
   id?: Prisma.StringFilter<"Document"> | string
   title?: Prisma.StringFilter<"Document"> | string
-  content?: Prisma.BytesNullableFilter<"Document"> | runtime.Bytes | null
   ownerId?: Prisma.StringFilter<"Document"> | string
   createdAt?: Prisma.DateTimeFilter<"Document"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Document"> | Date | string
   owner?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
   members?: Prisma.DocumentMemberListRelationFilter
   comments?: Prisma.CommentListRelationFilter
+  shares?: Prisma.DocumentShareListRelationFilter
+  updates?: Prisma.YjsUpdateListRelationFilter
+  snapshots?: Prisma.YjsSnapshotListRelationFilter
 }
 
 export type DocumentOrderByWithRelationInput = {
   id?: Prisma.SortOrder
   title?: Prisma.SortOrder
-  content?: Prisma.SortOrderInput | Prisma.SortOrder
   ownerId?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   owner?: Prisma.UserOrderByWithRelationInput
   members?: Prisma.DocumentMemberOrderByRelationAggregateInput
   comments?: Prisma.CommentOrderByRelationAggregateInput
+  shares?: Prisma.DocumentShareOrderByRelationAggregateInput
+  updates?: Prisma.YjsUpdateOrderByRelationAggregateInput
+  snapshots?: Prisma.YjsSnapshotOrderByRelationAggregateInput
 }
 
 export type DocumentWhereUniqueInput = Prisma.AtLeast<{
@@ -213,19 +210,20 @@ export type DocumentWhereUniqueInput = Prisma.AtLeast<{
   OR?: Prisma.DocumentWhereInput[]
   NOT?: Prisma.DocumentWhereInput | Prisma.DocumentWhereInput[]
   title?: Prisma.StringFilter<"Document"> | string
-  content?: Prisma.BytesNullableFilter<"Document"> | runtime.Bytes | null
   ownerId?: Prisma.StringFilter<"Document"> | string
   createdAt?: Prisma.DateTimeFilter<"Document"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Document"> | Date | string
   owner?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
   members?: Prisma.DocumentMemberListRelationFilter
   comments?: Prisma.CommentListRelationFilter
+  shares?: Prisma.DocumentShareListRelationFilter
+  updates?: Prisma.YjsUpdateListRelationFilter
+  snapshots?: Prisma.YjsSnapshotListRelationFilter
 }, "id">
 
 export type DocumentOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
   title?: Prisma.SortOrder
-  content?: Prisma.SortOrderInput | Prisma.SortOrder
   ownerId?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
@@ -240,7 +238,6 @@ export type DocumentScalarWhereWithAggregatesInput = {
   NOT?: Prisma.DocumentScalarWhereWithAggregatesInput | Prisma.DocumentScalarWhereWithAggregatesInput[]
   id?: Prisma.StringWithAggregatesFilter<"Document"> | string
   title?: Prisma.StringWithAggregatesFilter<"Document"> | string
-  content?: Prisma.BytesNullableWithAggregatesFilter<"Document"> | runtime.Bytes | null
   ownerId?: Prisma.StringWithAggregatesFilter<"Document"> | string
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"Document"> | Date | string
   updatedAt?: Prisma.DateTimeWithAggregatesFilter<"Document"> | Date | string
@@ -249,51 +246,58 @@ export type DocumentScalarWhereWithAggregatesInput = {
 export type DocumentCreateInput = {
   id?: string
   title?: string
-  content?: runtime.Bytes | null
   createdAt?: Date | string
   updatedAt?: Date | string
   owner: Prisma.UserCreateNestedOneWithoutDocumentsInput
   members?: Prisma.DocumentMemberCreateNestedManyWithoutDocumentInput
   comments?: Prisma.CommentCreateNestedManyWithoutDocumentInput
+  shares?: Prisma.DocumentShareCreateNestedManyWithoutDocumentInput
+  updates?: Prisma.YjsUpdateCreateNestedManyWithoutDocumentInput
+  snapshots?: Prisma.YjsSnapshotCreateNestedManyWithoutDocumentInput
 }
 
 export type DocumentUncheckedCreateInput = {
   id?: string
   title?: string
-  content?: runtime.Bytes | null
   ownerId: string
   createdAt?: Date | string
   updatedAt?: Date | string
   members?: Prisma.DocumentMemberUncheckedCreateNestedManyWithoutDocumentInput
   comments?: Prisma.CommentUncheckedCreateNestedManyWithoutDocumentInput
+  shares?: Prisma.DocumentShareUncheckedCreateNestedManyWithoutDocumentInput
+  updates?: Prisma.YjsUpdateUncheckedCreateNestedManyWithoutDocumentInput
+  snapshots?: Prisma.YjsSnapshotUncheckedCreateNestedManyWithoutDocumentInput
 }
 
 export type DocumentUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
-  content?: Prisma.NullableBytesFieldUpdateOperationsInput | runtime.Bytes | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   owner?: Prisma.UserUpdateOneRequiredWithoutDocumentsNestedInput
   members?: Prisma.DocumentMemberUpdateManyWithoutDocumentNestedInput
   comments?: Prisma.CommentUpdateManyWithoutDocumentNestedInput
+  shares?: Prisma.DocumentShareUpdateManyWithoutDocumentNestedInput
+  updates?: Prisma.YjsUpdateUpdateManyWithoutDocumentNestedInput
+  snapshots?: Prisma.YjsSnapshotUpdateManyWithoutDocumentNestedInput
 }
 
 export type DocumentUncheckedUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
-  content?: Prisma.NullableBytesFieldUpdateOperationsInput | runtime.Bytes | null
   ownerId?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   members?: Prisma.DocumentMemberUncheckedUpdateManyWithoutDocumentNestedInput
   comments?: Prisma.CommentUncheckedUpdateManyWithoutDocumentNestedInput
+  shares?: Prisma.DocumentShareUncheckedUpdateManyWithoutDocumentNestedInput
+  updates?: Prisma.YjsUpdateUncheckedUpdateManyWithoutDocumentNestedInput
+  snapshots?: Prisma.YjsSnapshotUncheckedUpdateManyWithoutDocumentNestedInput
 }
 
 export type DocumentCreateManyInput = {
   id?: string
   title?: string
-  content?: runtime.Bytes | null
   ownerId: string
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -302,7 +306,6 @@ export type DocumentCreateManyInput = {
 export type DocumentUpdateManyMutationInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
-  content?: Prisma.NullableBytesFieldUpdateOperationsInput | runtime.Bytes | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -310,7 +313,6 @@ export type DocumentUpdateManyMutationInput = {
 export type DocumentUncheckedUpdateManyInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
-  content?: Prisma.NullableBytesFieldUpdateOperationsInput | runtime.Bytes | null
   ownerId?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -329,7 +331,6 @@ export type DocumentOrderByRelationAggregateInput = {
 export type DocumentCountOrderByAggregateInput = {
   id?: Prisma.SortOrder
   title?: Prisma.SortOrder
-  content?: Prisma.SortOrder
   ownerId?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
@@ -338,7 +339,6 @@ export type DocumentCountOrderByAggregateInput = {
 export type DocumentMaxOrderByAggregateInput = {
   id?: Prisma.SortOrder
   title?: Prisma.SortOrder
-  content?: Prisma.SortOrder
   ownerId?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
@@ -347,7 +347,6 @@ export type DocumentMaxOrderByAggregateInput = {
 export type DocumentMinOrderByAggregateInput = {
   id?: Prisma.SortOrder
   title?: Prisma.SortOrder
-  content?: Prisma.SortOrder
   ownerId?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
@@ -400,10 +399,6 @@ export type DocumentUncheckedUpdateManyWithoutOwnerNestedInput = {
   deleteMany?: Prisma.DocumentScalarWhereInput | Prisma.DocumentScalarWhereInput[]
 }
 
-export type NullableBytesFieldUpdateOperationsInput = {
-  set?: runtime.Bytes | null
-}
-
 export type DocumentCreateNestedOneWithoutMembersInput = {
   create?: Prisma.XOR<Prisma.DocumentCreateWithoutMembersInput, Prisma.DocumentUncheckedCreateWithoutMembersInput>
   connectOrCreate?: Prisma.DocumentCreateOrConnectWithoutMembersInput
@@ -416,6 +411,48 @@ export type DocumentUpdateOneRequiredWithoutMembersNestedInput = {
   upsert?: Prisma.DocumentUpsertWithoutMembersInput
   connect?: Prisma.DocumentWhereUniqueInput
   update?: Prisma.XOR<Prisma.XOR<Prisma.DocumentUpdateToOneWithWhereWithoutMembersInput, Prisma.DocumentUpdateWithoutMembersInput>, Prisma.DocumentUncheckedUpdateWithoutMembersInput>
+}
+
+export type DocumentCreateNestedOneWithoutSharesInput = {
+  create?: Prisma.XOR<Prisma.DocumentCreateWithoutSharesInput, Prisma.DocumentUncheckedCreateWithoutSharesInput>
+  connectOrCreate?: Prisma.DocumentCreateOrConnectWithoutSharesInput
+  connect?: Prisma.DocumentWhereUniqueInput
+}
+
+export type DocumentUpdateOneRequiredWithoutSharesNestedInput = {
+  create?: Prisma.XOR<Prisma.DocumentCreateWithoutSharesInput, Prisma.DocumentUncheckedCreateWithoutSharesInput>
+  connectOrCreate?: Prisma.DocumentCreateOrConnectWithoutSharesInput
+  upsert?: Prisma.DocumentUpsertWithoutSharesInput
+  connect?: Prisma.DocumentWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.DocumentUpdateToOneWithWhereWithoutSharesInput, Prisma.DocumentUpdateWithoutSharesInput>, Prisma.DocumentUncheckedUpdateWithoutSharesInput>
+}
+
+export type DocumentCreateNestedOneWithoutUpdatesInput = {
+  create?: Prisma.XOR<Prisma.DocumentCreateWithoutUpdatesInput, Prisma.DocumentUncheckedCreateWithoutUpdatesInput>
+  connectOrCreate?: Prisma.DocumentCreateOrConnectWithoutUpdatesInput
+  connect?: Prisma.DocumentWhereUniqueInput
+}
+
+export type DocumentUpdateOneRequiredWithoutUpdatesNestedInput = {
+  create?: Prisma.XOR<Prisma.DocumentCreateWithoutUpdatesInput, Prisma.DocumentUncheckedCreateWithoutUpdatesInput>
+  connectOrCreate?: Prisma.DocumentCreateOrConnectWithoutUpdatesInput
+  upsert?: Prisma.DocumentUpsertWithoutUpdatesInput
+  connect?: Prisma.DocumentWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.DocumentUpdateToOneWithWhereWithoutUpdatesInput, Prisma.DocumentUpdateWithoutUpdatesInput>, Prisma.DocumentUncheckedUpdateWithoutUpdatesInput>
+}
+
+export type DocumentCreateNestedOneWithoutSnapshotsInput = {
+  create?: Prisma.XOR<Prisma.DocumentCreateWithoutSnapshotsInput, Prisma.DocumentUncheckedCreateWithoutSnapshotsInput>
+  connectOrCreate?: Prisma.DocumentCreateOrConnectWithoutSnapshotsInput
+  connect?: Prisma.DocumentWhereUniqueInput
+}
+
+export type DocumentUpdateOneRequiredWithoutSnapshotsNestedInput = {
+  create?: Prisma.XOR<Prisma.DocumentCreateWithoutSnapshotsInput, Prisma.DocumentUncheckedCreateWithoutSnapshotsInput>
+  connectOrCreate?: Prisma.DocumentCreateOrConnectWithoutSnapshotsInput
+  upsert?: Prisma.DocumentUpsertWithoutSnapshotsInput
+  connect?: Prisma.DocumentWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.DocumentUpdateToOneWithWhereWithoutSnapshotsInput, Prisma.DocumentUpdateWithoutSnapshotsInput>, Prisma.DocumentUncheckedUpdateWithoutSnapshotsInput>
 }
 
 export type DocumentCreateNestedOneWithoutCommentsInput = {
@@ -435,21 +472,25 @@ export type DocumentUpdateOneRequiredWithoutCommentsNestedInput = {
 export type DocumentCreateWithoutOwnerInput = {
   id?: string
   title?: string
-  content?: runtime.Bytes | null
   createdAt?: Date | string
   updatedAt?: Date | string
   members?: Prisma.DocumentMemberCreateNestedManyWithoutDocumentInput
   comments?: Prisma.CommentCreateNestedManyWithoutDocumentInput
+  shares?: Prisma.DocumentShareCreateNestedManyWithoutDocumentInput
+  updates?: Prisma.YjsUpdateCreateNestedManyWithoutDocumentInput
+  snapshots?: Prisma.YjsSnapshotCreateNestedManyWithoutDocumentInput
 }
 
 export type DocumentUncheckedCreateWithoutOwnerInput = {
   id?: string
   title?: string
-  content?: runtime.Bytes | null
   createdAt?: Date | string
   updatedAt?: Date | string
   members?: Prisma.DocumentMemberUncheckedCreateNestedManyWithoutDocumentInput
   comments?: Prisma.CommentUncheckedCreateNestedManyWithoutDocumentInput
+  shares?: Prisma.DocumentShareUncheckedCreateNestedManyWithoutDocumentInput
+  updates?: Prisma.YjsUpdateUncheckedCreateNestedManyWithoutDocumentInput
+  snapshots?: Prisma.YjsSnapshotUncheckedCreateNestedManyWithoutDocumentInput
 }
 
 export type DocumentCreateOrConnectWithoutOwnerInput = {
@@ -484,7 +525,6 @@ export type DocumentScalarWhereInput = {
   NOT?: Prisma.DocumentScalarWhereInput | Prisma.DocumentScalarWhereInput[]
   id?: Prisma.StringFilter<"Document"> | string
   title?: Prisma.StringFilter<"Document"> | string
-  content?: Prisma.BytesNullableFilter<"Document"> | runtime.Bytes | null
   ownerId?: Prisma.StringFilter<"Document"> | string
   createdAt?: Prisma.DateTimeFilter<"Document"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Document"> | Date | string
@@ -493,21 +533,25 @@ export type DocumentScalarWhereInput = {
 export type DocumentCreateWithoutMembersInput = {
   id?: string
   title?: string
-  content?: runtime.Bytes | null
   createdAt?: Date | string
   updatedAt?: Date | string
   owner: Prisma.UserCreateNestedOneWithoutDocumentsInput
   comments?: Prisma.CommentCreateNestedManyWithoutDocumentInput
+  shares?: Prisma.DocumentShareCreateNestedManyWithoutDocumentInput
+  updates?: Prisma.YjsUpdateCreateNestedManyWithoutDocumentInput
+  snapshots?: Prisma.YjsSnapshotCreateNestedManyWithoutDocumentInput
 }
 
 export type DocumentUncheckedCreateWithoutMembersInput = {
   id?: string
   title?: string
-  content?: runtime.Bytes | null
   ownerId: string
   createdAt?: Date | string
   updatedAt?: Date | string
   comments?: Prisma.CommentUncheckedCreateNestedManyWithoutDocumentInput
+  shares?: Prisma.DocumentShareUncheckedCreateNestedManyWithoutDocumentInput
+  updates?: Prisma.YjsUpdateUncheckedCreateNestedManyWithoutDocumentInput
+  snapshots?: Prisma.YjsSnapshotUncheckedCreateNestedManyWithoutDocumentInput
 }
 
 export type DocumentCreateOrConnectWithoutMembersInput = {
@@ -529,41 +573,241 @@ export type DocumentUpdateToOneWithWhereWithoutMembersInput = {
 export type DocumentUpdateWithoutMembersInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
-  content?: Prisma.NullableBytesFieldUpdateOperationsInput | runtime.Bytes | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   owner?: Prisma.UserUpdateOneRequiredWithoutDocumentsNestedInput
   comments?: Prisma.CommentUpdateManyWithoutDocumentNestedInput
+  shares?: Prisma.DocumentShareUpdateManyWithoutDocumentNestedInput
+  updates?: Prisma.YjsUpdateUpdateManyWithoutDocumentNestedInput
+  snapshots?: Prisma.YjsSnapshotUpdateManyWithoutDocumentNestedInput
 }
 
 export type DocumentUncheckedUpdateWithoutMembersInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
-  content?: Prisma.NullableBytesFieldUpdateOperationsInput | runtime.Bytes | null
   ownerId?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   comments?: Prisma.CommentUncheckedUpdateManyWithoutDocumentNestedInput
+  shares?: Prisma.DocumentShareUncheckedUpdateManyWithoutDocumentNestedInput
+  updates?: Prisma.YjsUpdateUncheckedUpdateManyWithoutDocumentNestedInput
+  snapshots?: Prisma.YjsSnapshotUncheckedUpdateManyWithoutDocumentNestedInput
+}
+
+export type DocumentCreateWithoutSharesInput = {
+  id?: string
+  title?: string
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  owner: Prisma.UserCreateNestedOneWithoutDocumentsInput
+  members?: Prisma.DocumentMemberCreateNestedManyWithoutDocumentInput
+  comments?: Prisma.CommentCreateNestedManyWithoutDocumentInput
+  updates?: Prisma.YjsUpdateCreateNestedManyWithoutDocumentInput
+  snapshots?: Prisma.YjsSnapshotCreateNestedManyWithoutDocumentInput
+}
+
+export type DocumentUncheckedCreateWithoutSharesInput = {
+  id?: string
+  title?: string
+  ownerId: string
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  members?: Prisma.DocumentMemberUncheckedCreateNestedManyWithoutDocumentInput
+  comments?: Prisma.CommentUncheckedCreateNestedManyWithoutDocumentInput
+  updates?: Prisma.YjsUpdateUncheckedCreateNestedManyWithoutDocumentInput
+  snapshots?: Prisma.YjsSnapshotUncheckedCreateNestedManyWithoutDocumentInput
+}
+
+export type DocumentCreateOrConnectWithoutSharesInput = {
+  where: Prisma.DocumentWhereUniqueInput
+  create: Prisma.XOR<Prisma.DocumentCreateWithoutSharesInput, Prisma.DocumentUncheckedCreateWithoutSharesInput>
+}
+
+export type DocumentUpsertWithoutSharesInput = {
+  update: Prisma.XOR<Prisma.DocumentUpdateWithoutSharesInput, Prisma.DocumentUncheckedUpdateWithoutSharesInput>
+  create: Prisma.XOR<Prisma.DocumentCreateWithoutSharesInput, Prisma.DocumentUncheckedCreateWithoutSharesInput>
+  where?: Prisma.DocumentWhereInput
+}
+
+export type DocumentUpdateToOneWithWhereWithoutSharesInput = {
+  where?: Prisma.DocumentWhereInput
+  data: Prisma.XOR<Prisma.DocumentUpdateWithoutSharesInput, Prisma.DocumentUncheckedUpdateWithoutSharesInput>
+}
+
+export type DocumentUpdateWithoutSharesInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  title?: Prisma.StringFieldUpdateOperationsInput | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  owner?: Prisma.UserUpdateOneRequiredWithoutDocumentsNestedInput
+  members?: Prisma.DocumentMemberUpdateManyWithoutDocumentNestedInput
+  comments?: Prisma.CommentUpdateManyWithoutDocumentNestedInput
+  updates?: Prisma.YjsUpdateUpdateManyWithoutDocumentNestedInput
+  snapshots?: Prisma.YjsSnapshotUpdateManyWithoutDocumentNestedInput
+}
+
+export type DocumentUncheckedUpdateWithoutSharesInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  title?: Prisma.StringFieldUpdateOperationsInput | string
+  ownerId?: Prisma.StringFieldUpdateOperationsInput | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  members?: Prisma.DocumentMemberUncheckedUpdateManyWithoutDocumentNestedInput
+  comments?: Prisma.CommentUncheckedUpdateManyWithoutDocumentNestedInput
+  updates?: Prisma.YjsUpdateUncheckedUpdateManyWithoutDocumentNestedInput
+  snapshots?: Prisma.YjsSnapshotUncheckedUpdateManyWithoutDocumentNestedInput
+}
+
+export type DocumentCreateWithoutUpdatesInput = {
+  id?: string
+  title?: string
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  owner: Prisma.UserCreateNestedOneWithoutDocumentsInput
+  members?: Prisma.DocumentMemberCreateNestedManyWithoutDocumentInput
+  comments?: Prisma.CommentCreateNestedManyWithoutDocumentInput
+  shares?: Prisma.DocumentShareCreateNestedManyWithoutDocumentInput
+  snapshots?: Prisma.YjsSnapshotCreateNestedManyWithoutDocumentInput
+}
+
+export type DocumentUncheckedCreateWithoutUpdatesInput = {
+  id?: string
+  title?: string
+  ownerId: string
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  members?: Prisma.DocumentMemberUncheckedCreateNestedManyWithoutDocumentInput
+  comments?: Prisma.CommentUncheckedCreateNestedManyWithoutDocumentInput
+  shares?: Prisma.DocumentShareUncheckedCreateNestedManyWithoutDocumentInput
+  snapshots?: Prisma.YjsSnapshotUncheckedCreateNestedManyWithoutDocumentInput
+}
+
+export type DocumentCreateOrConnectWithoutUpdatesInput = {
+  where: Prisma.DocumentWhereUniqueInput
+  create: Prisma.XOR<Prisma.DocumentCreateWithoutUpdatesInput, Prisma.DocumentUncheckedCreateWithoutUpdatesInput>
+}
+
+export type DocumentUpsertWithoutUpdatesInput = {
+  update: Prisma.XOR<Prisma.DocumentUpdateWithoutUpdatesInput, Prisma.DocumentUncheckedUpdateWithoutUpdatesInput>
+  create: Prisma.XOR<Prisma.DocumentCreateWithoutUpdatesInput, Prisma.DocumentUncheckedCreateWithoutUpdatesInput>
+  where?: Prisma.DocumentWhereInput
+}
+
+export type DocumentUpdateToOneWithWhereWithoutUpdatesInput = {
+  where?: Prisma.DocumentWhereInput
+  data: Prisma.XOR<Prisma.DocumentUpdateWithoutUpdatesInput, Prisma.DocumentUncheckedUpdateWithoutUpdatesInput>
+}
+
+export type DocumentUpdateWithoutUpdatesInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  title?: Prisma.StringFieldUpdateOperationsInput | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  owner?: Prisma.UserUpdateOneRequiredWithoutDocumentsNestedInput
+  members?: Prisma.DocumentMemberUpdateManyWithoutDocumentNestedInput
+  comments?: Prisma.CommentUpdateManyWithoutDocumentNestedInput
+  shares?: Prisma.DocumentShareUpdateManyWithoutDocumentNestedInput
+  snapshots?: Prisma.YjsSnapshotUpdateManyWithoutDocumentNestedInput
+}
+
+export type DocumentUncheckedUpdateWithoutUpdatesInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  title?: Prisma.StringFieldUpdateOperationsInput | string
+  ownerId?: Prisma.StringFieldUpdateOperationsInput | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  members?: Prisma.DocumentMemberUncheckedUpdateManyWithoutDocumentNestedInput
+  comments?: Prisma.CommentUncheckedUpdateManyWithoutDocumentNestedInput
+  shares?: Prisma.DocumentShareUncheckedUpdateManyWithoutDocumentNestedInput
+  snapshots?: Prisma.YjsSnapshotUncheckedUpdateManyWithoutDocumentNestedInput
+}
+
+export type DocumentCreateWithoutSnapshotsInput = {
+  id?: string
+  title?: string
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  owner: Prisma.UserCreateNestedOneWithoutDocumentsInput
+  members?: Prisma.DocumentMemberCreateNestedManyWithoutDocumentInput
+  comments?: Prisma.CommentCreateNestedManyWithoutDocumentInput
+  shares?: Prisma.DocumentShareCreateNestedManyWithoutDocumentInput
+  updates?: Prisma.YjsUpdateCreateNestedManyWithoutDocumentInput
+}
+
+export type DocumentUncheckedCreateWithoutSnapshotsInput = {
+  id?: string
+  title?: string
+  ownerId: string
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  members?: Prisma.DocumentMemberUncheckedCreateNestedManyWithoutDocumentInput
+  comments?: Prisma.CommentUncheckedCreateNestedManyWithoutDocumentInput
+  shares?: Prisma.DocumentShareUncheckedCreateNestedManyWithoutDocumentInput
+  updates?: Prisma.YjsUpdateUncheckedCreateNestedManyWithoutDocumentInput
+}
+
+export type DocumentCreateOrConnectWithoutSnapshotsInput = {
+  where: Prisma.DocumentWhereUniqueInput
+  create: Prisma.XOR<Prisma.DocumentCreateWithoutSnapshotsInput, Prisma.DocumentUncheckedCreateWithoutSnapshotsInput>
+}
+
+export type DocumentUpsertWithoutSnapshotsInput = {
+  update: Prisma.XOR<Prisma.DocumentUpdateWithoutSnapshotsInput, Prisma.DocumentUncheckedUpdateWithoutSnapshotsInput>
+  create: Prisma.XOR<Prisma.DocumentCreateWithoutSnapshotsInput, Prisma.DocumentUncheckedCreateWithoutSnapshotsInput>
+  where?: Prisma.DocumentWhereInput
+}
+
+export type DocumentUpdateToOneWithWhereWithoutSnapshotsInput = {
+  where?: Prisma.DocumentWhereInput
+  data: Prisma.XOR<Prisma.DocumentUpdateWithoutSnapshotsInput, Prisma.DocumentUncheckedUpdateWithoutSnapshotsInput>
+}
+
+export type DocumentUpdateWithoutSnapshotsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  title?: Prisma.StringFieldUpdateOperationsInput | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  owner?: Prisma.UserUpdateOneRequiredWithoutDocumentsNestedInput
+  members?: Prisma.DocumentMemberUpdateManyWithoutDocumentNestedInput
+  comments?: Prisma.CommentUpdateManyWithoutDocumentNestedInput
+  shares?: Prisma.DocumentShareUpdateManyWithoutDocumentNestedInput
+  updates?: Prisma.YjsUpdateUpdateManyWithoutDocumentNestedInput
+}
+
+export type DocumentUncheckedUpdateWithoutSnapshotsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  title?: Prisma.StringFieldUpdateOperationsInput | string
+  ownerId?: Prisma.StringFieldUpdateOperationsInput | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  members?: Prisma.DocumentMemberUncheckedUpdateManyWithoutDocumentNestedInput
+  comments?: Prisma.CommentUncheckedUpdateManyWithoutDocumentNestedInput
+  shares?: Prisma.DocumentShareUncheckedUpdateManyWithoutDocumentNestedInput
+  updates?: Prisma.YjsUpdateUncheckedUpdateManyWithoutDocumentNestedInput
 }
 
 export type DocumentCreateWithoutCommentsInput = {
   id?: string
   title?: string
-  content?: runtime.Bytes | null
   createdAt?: Date | string
   updatedAt?: Date | string
   owner: Prisma.UserCreateNestedOneWithoutDocumentsInput
   members?: Prisma.DocumentMemberCreateNestedManyWithoutDocumentInput
+  shares?: Prisma.DocumentShareCreateNestedManyWithoutDocumentInput
+  updates?: Prisma.YjsUpdateCreateNestedManyWithoutDocumentInput
+  snapshots?: Prisma.YjsSnapshotCreateNestedManyWithoutDocumentInput
 }
 
 export type DocumentUncheckedCreateWithoutCommentsInput = {
   id?: string
   title?: string
-  content?: runtime.Bytes | null
   ownerId: string
   createdAt?: Date | string
   updatedAt?: Date | string
   members?: Prisma.DocumentMemberUncheckedCreateNestedManyWithoutDocumentInput
+  shares?: Prisma.DocumentShareUncheckedCreateNestedManyWithoutDocumentInput
+  updates?: Prisma.YjsUpdateUncheckedCreateNestedManyWithoutDocumentInput
+  snapshots?: Prisma.YjsSnapshotUncheckedCreateNestedManyWithoutDocumentInput
 }
 
 export type DocumentCreateOrConnectWithoutCommentsInput = {
@@ -585,27 +829,30 @@ export type DocumentUpdateToOneWithWhereWithoutCommentsInput = {
 export type DocumentUpdateWithoutCommentsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
-  content?: Prisma.NullableBytesFieldUpdateOperationsInput | runtime.Bytes | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   owner?: Prisma.UserUpdateOneRequiredWithoutDocumentsNestedInput
   members?: Prisma.DocumentMemberUpdateManyWithoutDocumentNestedInput
+  shares?: Prisma.DocumentShareUpdateManyWithoutDocumentNestedInput
+  updates?: Prisma.YjsUpdateUpdateManyWithoutDocumentNestedInput
+  snapshots?: Prisma.YjsSnapshotUpdateManyWithoutDocumentNestedInput
 }
 
 export type DocumentUncheckedUpdateWithoutCommentsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
-  content?: Prisma.NullableBytesFieldUpdateOperationsInput | runtime.Bytes | null
   ownerId?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   members?: Prisma.DocumentMemberUncheckedUpdateManyWithoutDocumentNestedInput
+  shares?: Prisma.DocumentShareUncheckedUpdateManyWithoutDocumentNestedInput
+  updates?: Prisma.YjsUpdateUncheckedUpdateManyWithoutDocumentNestedInput
+  snapshots?: Prisma.YjsSnapshotUncheckedUpdateManyWithoutDocumentNestedInput
 }
 
 export type DocumentCreateManyOwnerInput = {
   id?: string
   title?: string
-  content?: runtime.Bytes | null
   createdAt?: Date | string
   updatedAt?: Date | string
 }
@@ -613,27 +860,30 @@ export type DocumentCreateManyOwnerInput = {
 export type DocumentUpdateWithoutOwnerInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
-  content?: Prisma.NullableBytesFieldUpdateOperationsInput | runtime.Bytes | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   members?: Prisma.DocumentMemberUpdateManyWithoutDocumentNestedInput
   comments?: Prisma.CommentUpdateManyWithoutDocumentNestedInput
+  shares?: Prisma.DocumentShareUpdateManyWithoutDocumentNestedInput
+  updates?: Prisma.YjsUpdateUpdateManyWithoutDocumentNestedInput
+  snapshots?: Prisma.YjsSnapshotUpdateManyWithoutDocumentNestedInput
 }
 
 export type DocumentUncheckedUpdateWithoutOwnerInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
-  content?: Prisma.NullableBytesFieldUpdateOperationsInput | runtime.Bytes | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   members?: Prisma.DocumentMemberUncheckedUpdateManyWithoutDocumentNestedInput
   comments?: Prisma.CommentUncheckedUpdateManyWithoutDocumentNestedInput
+  shares?: Prisma.DocumentShareUncheckedUpdateManyWithoutDocumentNestedInput
+  updates?: Prisma.YjsUpdateUncheckedUpdateManyWithoutDocumentNestedInput
+  snapshots?: Prisma.YjsSnapshotUncheckedUpdateManyWithoutDocumentNestedInput
 }
 
 export type DocumentUncheckedUpdateManyWithoutOwnerInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
-  content?: Prisma.NullableBytesFieldUpdateOperationsInput | runtime.Bytes | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -646,11 +896,17 @@ export type DocumentUncheckedUpdateManyWithoutOwnerInput = {
 export type DocumentCountOutputType = {
   members: number
   comments: number
+  shares: number
+  updates: number
+  snapshots: number
 }
 
 export type DocumentCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   members?: boolean | DocumentCountOutputTypeCountMembersArgs
   comments?: boolean | DocumentCountOutputTypeCountCommentsArgs
+  shares?: boolean | DocumentCountOutputTypeCountSharesArgs
+  updates?: boolean | DocumentCountOutputTypeCountUpdatesArgs
+  snapshots?: boolean | DocumentCountOutputTypeCountSnapshotsArgs
 }
 
 /**
@@ -677,24 +933,46 @@ export type DocumentCountOutputTypeCountCommentsArgs<ExtArgs extends runtime.Typ
   where?: Prisma.CommentWhereInput
 }
 
+/**
+ * DocumentCountOutputType without action
+ */
+export type DocumentCountOutputTypeCountSharesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.DocumentShareWhereInput
+}
+
+/**
+ * DocumentCountOutputType without action
+ */
+export type DocumentCountOutputTypeCountUpdatesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.YjsUpdateWhereInput
+}
+
+/**
+ * DocumentCountOutputType without action
+ */
+export type DocumentCountOutputTypeCountSnapshotsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.YjsSnapshotWhereInput
+}
+
 
 export type DocumentSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
   title?: boolean
-  content?: boolean
   ownerId?: boolean
   createdAt?: boolean
   updatedAt?: boolean
   owner?: boolean | Prisma.UserDefaultArgs<ExtArgs>
   members?: boolean | Prisma.Document$membersArgs<ExtArgs>
   comments?: boolean | Prisma.Document$commentsArgs<ExtArgs>
+  shares?: boolean | Prisma.Document$sharesArgs<ExtArgs>
+  updates?: boolean | Prisma.Document$updatesArgs<ExtArgs>
+  snapshots?: boolean | Prisma.Document$snapshotsArgs<ExtArgs>
   _count?: boolean | Prisma.DocumentCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["document"]>
 
 export type DocumentSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
   title?: boolean
-  content?: boolean
   ownerId?: boolean
   createdAt?: boolean
   updatedAt?: boolean
@@ -704,7 +982,6 @@ export type DocumentSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Exte
 export type DocumentSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
   title?: boolean
-  content?: boolean
   ownerId?: boolean
   createdAt?: boolean
   updatedAt?: boolean
@@ -714,17 +991,19 @@ export type DocumentSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Exte
 export type DocumentSelectScalar = {
   id?: boolean
   title?: boolean
-  content?: boolean
   ownerId?: boolean
   createdAt?: boolean
   updatedAt?: boolean
 }
 
-export type DocumentOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "title" | "content" | "ownerId" | "createdAt" | "updatedAt", ExtArgs["result"]["document"]>
+export type DocumentOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "title" | "ownerId" | "createdAt" | "updatedAt", ExtArgs["result"]["document"]>
 export type DocumentInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   owner?: boolean | Prisma.UserDefaultArgs<ExtArgs>
   members?: boolean | Prisma.Document$membersArgs<ExtArgs>
   comments?: boolean | Prisma.Document$commentsArgs<ExtArgs>
+  shares?: boolean | Prisma.Document$sharesArgs<ExtArgs>
+  updates?: boolean | Prisma.Document$updatesArgs<ExtArgs>
+  snapshots?: boolean | Prisma.Document$snapshotsArgs<ExtArgs>
   _count?: boolean | Prisma.DocumentCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type DocumentIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -740,11 +1019,13 @@ export type $DocumentPayload<ExtArgs extends runtime.Types.Extensions.InternalAr
     owner: Prisma.$UserPayload<ExtArgs>
     members: Prisma.$DocumentMemberPayload<ExtArgs>[]
     comments: Prisma.$CommentPayload<ExtArgs>[]
+    shares: Prisma.$DocumentSharePayload<ExtArgs>[]
+    updates: Prisma.$YjsUpdatePayload<ExtArgs>[]
+    snapshots: Prisma.$YjsSnapshotPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
     title: string
-    content: runtime.Bytes | null
     ownerId: string
     createdAt: Date
     updatedAt: Date
@@ -1145,6 +1426,9 @@ export interface Prisma__DocumentClient<T, Null = never, ExtArgs extends runtime
   owner<T extends Prisma.UserDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.UserDefaultArgs<ExtArgs>>): Prisma.Prisma__UserClient<runtime.Types.Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   members<T extends Prisma.Document$membersArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Document$membersArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$DocumentMemberPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   comments<T extends Prisma.Document$commentsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Document$commentsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$CommentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  shares<T extends Prisma.Document$sharesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Document$sharesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$DocumentSharePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  updates<T extends Prisma.Document$updatesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Document$updatesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$YjsUpdatePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  snapshots<T extends Prisma.Document$snapshotsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Document$snapshotsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$YjsSnapshotPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -1176,7 +1460,6 @@ export interface Prisma__DocumentClient<T, Null = never, ExtArgs extends runtime
 export interface DocumentFieldRefs {
   readonly id: Prisma.FieldRef<"Document", 'String'>
   readonly title: Prisma.FieldRef<"Document", 'String'>
-  readonly content: Prisma.FieldRef<"Document", 'Bytes'>
   readonly ownerId: Prisma.FieldRef<"Document", 'String'>
   readonly createdAt: Prisma.FieldRef<"Document", 'DateTime'>
   readonly updatedAt: Prisma.FieldRef<"Document", 'DateTime'>
@@ -1626,6 +1909,78 @@ export type Document$commentsArgs<ExtArgs extends runtime.Types.Extensions.Inter
   take?: number
   skip?: number
   distinct?: Prisma.CommentScalarFieldEnum | Prisma.CommentScalarFieldEnum[]
+}
+
+/**
+ * Document.shares
+ */
+export type Document$sharesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the DocumentShare
+   */
+  select?: Prisma.DocumentShareSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the DocumentShare
+   */
+  omit?: Prisma.DocumentShareOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.DocumentShareInclude<ExtArgs> | null
+  where?: Prisma.DocumentShareWhereInput
+  orderBy?: Prisma.DocumentShareOrderByWithRelationInput | Prisma.DocumentShareOrderByWithRelationInput[]
+  cursor?: Prisma.DocumentShareWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.DocumentShareScalarFieldEnum | Prisma.DocumentShareScalarFieldEnum[]
+}
+
+/**
+ * Document.updates
+ */
+export type Document$updatesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the YjsUpdate
+   */
+  select?: Prisma.YjsUpdateSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the YjsUpdate
+   */
+  omit?: Prisma.YjsUpdateOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.YjsUpdateInclude<ExtArgs> | null
+  where?: Prisma.YjsUpdateWhereInput
+  orderBy?: Prisma.YjsUpdateOrderByWithRelationInput | Prisma.YjsUpdateOrderByWithRelationInput[]
+  cursor?: Prisma.YjsUpdateWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.YjsUpdateScalarFieldEnum | Prisma.YjsUpdateScalarFieldEnum[]
+}
+
+/**
+ * Document.snapshots
+ */
+export type Document$snapshotsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the YjsSnapshot
+   */
+  select?: Prisma.YjsSnapshotSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the YjsSnapshot
+   */
+  omit?: Prisma.YjsSnapshotOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.YjsSnapshotInclude<ExtArgs> | null
+  where?: Prisma.YjsSnapshotWhereInput
+  orderBy?: Prisma.YjsSnapshotOrderByWithRelationInput | Prisma.YjsSnapshotOrderByWithRelationInput[]
+  cursor?: Prisma.YjsSnapshotWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.YjsSnapshotScalarFieldEnum | Prisma.YjsSnapshotScalarFieldEnum[]
 }
 
 /**

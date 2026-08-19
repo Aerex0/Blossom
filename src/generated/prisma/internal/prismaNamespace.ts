@@ -400,6 +400,9 @@ export const ModelName = {
   User: 'User',
   Document: 'Document',
   DocumentMember: 'DocumentMember',
+  DocumentShare: 'DocumentShare',
+  YjsUpdate: 'YjsUpdate',
+  YjsSnapshot: 'YjsSnapshot',
   Comment: 'Comment'
 } as const
 
@@ -416,7 +419,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "user" | "document" | "documentMember" | "comment"
+    modelProps: "user" | "document" | "documentMember" | "documentShare" | "yjsUpdate" | "yjsSnapshot" | "comment"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -642,6 +645,228 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         }
       }
     }
+    DocumentShare: {
+      payload: Prisma.$DocumentSharePayload<ExtArgs>
+      fields: Prisma.DocumentShareFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.DocumentShareFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DocumentSharePayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.DocumentShareFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DocumentSharePayload>
+        }
+        findFirst: {
+          args: Prisma.DocumentShareFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DocumentSharePayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.DocumentShareFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DocumentSharePayload>
+        }
+        findMany: {
+          args: Prisma.DocumentShareFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DocumentSharePayload>[]
+        }
+        create: {
+          args: Prisma.DocumentShareCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DocumentSharePayload>
+        }
+        createMany: {
+          args: Prisma.DocumentShareCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.DocumentShareCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DocumentSharePayload>[]
+        }
+        delete: {
+          args: Prisma.DocumentShareDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DocumentSharePayload>
+        }
+        update: {
+          args: Prisma.DocumentShareUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DocumentSharePayload>
+        }
+        deleteMany: {
+          args: Prisma.DocumentShareDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.DocumentShareUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.DocumentShareUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DocumentSharePayload>[]
+        }
+        upsert: {
+          args: Prisma.DocumentShareUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DocumentSharePayload>
+        }
+        aggregate: {
+          args: Prisma.DocumentShareAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateDocumentShare>
+        }
+        groupBy: {
+          args: Prisma.DocumentShareGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.DocumentShareGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.DocumentShareCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.DocumentShareCountAggregateOutputType> | number
+        }
+      }
+    }
+    YjsUpdate: {
+      payload: Prisma.$YjsUpdatePayload<ExtArgs>
+      fields: Prisma.YjsUpdateFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.YjsUpdateFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$YjsUpdatePayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.YjsUpdateFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$YjsUpdatePayload>
+        }
+        findFirst: {
+          args: Prisma.YjsUpdateFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$YjsUpdatePayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.YjsUpdateFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$YjsUpdatePayload>
+        }
+        findMany: {
+          args: Prisma.YjsUpdateFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$YjsUpdatePayload>[]
+        }
+        create: {
+          args: Prisma.YjsUpdateCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$YjsUpdatePayload>
+        }
+        createMany: {
+          args: Prisma.YjsUpdateCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.YjsUpdateCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$YjsUpdatePayload>[]
+        }
+        delete: {
+          args: Prisma.YjsUpdateDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$YjsUpdatePayload>
+        }
+        update: {
+          args: Prisma.YjsUpdateUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$YjsUpdatePayload>
+        }
+        deleteMany: {
+          args: Prisma.YjsUpdateDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.YjsUpdateUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.YjsUpdateUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$YjsUpdatePayload>[]
+        }
+        upsert: {
+          args: Prisma.YjsUpdateUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$YjsUpdatePayload>
+        }
+        aggregate: {
+          args: Prisma.YjsUpdateAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateYjsUpdate>
+        }
+        groupBy: {
+          args: Prisma.YjsUpdateGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.YjsUpdateGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.YjsUpdateCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.YjsUpdateCountAggregateOutputType> | number
+        }
+      }
+    }
+    YjsSnapshot: {
+      payload: Prisma.$YjsSnapshotPayload<ExtArgs>
+      fields: Prisma.YjsSnapshotFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.YjsSnapshotFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$YjsSnapshotPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.YjsSnapshotFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$YjsSnapshotPayload>
+        }
+        findFirst: {
+          args: Prisma.YjsSnapshotFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$YjsSnapshotPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.YjsSnapshotFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$YjsSnapshotPayload>
+        }
+        findMany: {
+          args: Prisma.YjsSnapshotFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$YjsSnapshotPayload>[]
+        }
+        create: {
+          args: Prisma.YjsSnapshotCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$YjsSnapshotPayload>
+        }
+        createMany: {
+          args: Prisma.YjsSnapshotCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.YjsSnapshotCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$YjsSnapshotPayload>[]
+        }
+        delete: {
+          args: Prisma.YjsSnapshotDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$YjsSnapshotPayload>
+        }
+        update: {
+          args: Prisma.YjsSnapshotUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$YjsSnapshotPayload>
+        }
+        deleteMany: {
+          args: Prisma.YjsSnapshotDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.YjsSnapshotUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.YjsSnapshotUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$YjsSnapshotPayload>[]
+        }
+        upsert: {
+          args: Prisma.YjsSnapshotUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$YjsSnapshotPayload>
+        }
+        aggregate: {
+          args: Prisma.YjsSnapshotAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateYjsSnapshot>
+        }
+        groupBy: {
+          args: Prisma.YjsSnapshotGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.YjsSnapshotGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.YjsSnapshotCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.YjsSnapshotCountAggregateOutputType> | number
+        }
+      }
+    }
     Comment: {
       payload: Prisma.$CommentPayload<ExtArgs>
       fields: Prisma.CommentFieldRefs
@@ -769,7 +994,6 @@ export type UserScalarFieldEnum = (typeof UserScalarFieldEnum)[keyof typeof User
 export const DocumentScalarFieldEnum = {
   id: 'id',
   title: 'title',
-  content: 'content',
   ownerId: 'ownerId',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
@@ -786,6 +1010,38 @@ export const DocumentMemberScalarFieldEnum = {
 } as const
 
 export type DocumentMemberScalarFieldEnum = (typeof DocumentMemberScalarFieldEnum)[keyof typeof DocumentMemberScalarFieldEnum]
+
+
+export const DocumentShareScalarFieldEnum = {
+  id: 'id',
+  documentId: 'documentId',
+  role: 'role',
+  createdAt: 'createdAt'
+} as const
+
+export type DocumentShareScalarFieldEnum = (typeof DocumentShareScalarFieldEnum)[keyof typeof DocumentShareScalarFieldEnum]
+
+
+export const YjsUpdateScalarFieldEnum = {
+  id: 'id',
+  documentId: 'documentId',
+  seq: 'seq',
+  update: 'update',
+  createdAt: 'createdAt'
+} as const
+
+export type YjsUpdateScalarFieldEnum = (typeof YjsUpdateScalarFieldEnum)[keyof typeof YjsUpdateScalarFieldEnum]
+
+
+export const YjsSnapshotScalarFieldEnum = {
+  id: 'id',
+  documentId: 'documentId',
+  seq: 'seq',
+  snapshot: 'snapshot',
+  createdAt: 'createdAt'
+} as const
+
+export type YjsSnapshotScalarFieldEnum = (typeof YjsSnapshotScalarFieldEnum)[keyof typeof YjsSnapshotScalarFieldEnum]
 
 
 export const CommentScalarFieldEnum = {
@@ -815,14 +1071,6 @@ export const QueryMode = {
 } as const
 
 export type QueryMode = (typeof QueryMode)[keyof typeof QueryMode]
-
-
-export const NullsOrder = {
-  first: 'first',
-  last: 'last'
-} as const
-
-export type NullsOrder = (typeof NullsOrder)[keyof typeof NullsOrder]
 
 
 
@@ -860,20 +1108,6 @@ export type ListDateTimeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaM
 
 
 /**
- * Reference to a field of type 'Bytes'
- */
-export type BytesFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Bytes'>
-    
-
-
-/**
- * Reference to a field of type 'Bytes[]'
- */
-export type ListBytesFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Bytes[]'>
-    
-
-
-/**
  * Reference to a field of type 'Role'
  */
 export type EnumRoleFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Role'>
@@ -884,6 +1118,34 @@ export type EnumRoleFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel
  * Reference to a field of type 'Role[]'
  */
 export type ListEnumRoleFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Role[]'>
+    
+
+
+/**
+ * Reference to a field of type 'BigInt'
+ */
+export type BigIntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'BigInt'>
+    
+
+
+/**
+ * Reference to a field of type 'BigInt[]'
+ */
+export type ListBigIntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'BigInt[]'>
+    
+
+
+/**
+ * Reference to a field of type 'Bytes'
+ */
+export type BytesFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Bytes'>
+    
+
+
+/**
+ * Reference to a field of type 'Bytes[]'
+ */
+export type ListBytesFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Bytes[]'>
     
 
 
@@ -905,6 +1167,20 @@ export type IntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'In
  * Reference to a field of type 'Int[]'
  */
 export type ListIntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Int[]'>
+    
+
+
+/**
+ * Reference to a field of type 'Float'
+ */
+export type FloatFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Float'>
+    
+
+
+/**
+ * Reference to a field of type 'Float[]'
+ */
+export type ListFloatFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Float[]'>
     
 
 /**
@@ -1061,6 +1337,9 @@ export type GlobalOmitConfig = {
   user?: Prisma.UserOmit
   document?: Prisma.DocumentOmit
   documentMember?: Prisma.DocumentMemberOmit
+  documentShare?: Prisma.DocumentShareOmit
+  yjsUpdate?: Prisma.YjsUpdateOmit
+  yjsSnapshot?: Prisma.YjsSnapshotOmit
   comment?: Prisma.CommentOmit
 }
 

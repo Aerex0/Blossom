@@ -11,5 +11,8 @@
 export type * from './models/User'
 export type * from './models/Document'
 export type * from './models/DocumentMember'
+export type * from './models/DocumentShare'
+export type * from './models/YjsUpdate'
+export type * from './models/YjsSnapshot'
 export type * from './models/Comment'
 export type * from './commonInputTypes'

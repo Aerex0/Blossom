@@ -33,6 +33,21 @@ export type Document = Prisma.DocumentModel
  */
 export type DocumentMember = Prisma.DocumentMemberModel
 /**
+ * Model DocumentShare
+ * 
+ */
+export type DocumentShare = Prisma.DocumentShareModel
+/**
+ * Model YjsUpdate
+ * 
+ */
+export type YjsUpdate = Prisma.YjsUpdateModel
+/**
+ * Model YjsSnapshot
+ * 
+ */
+export type YjsSnapshot = Prisma.YjsSnapshotModel
+/**
  * Model Comment
  * 
  */

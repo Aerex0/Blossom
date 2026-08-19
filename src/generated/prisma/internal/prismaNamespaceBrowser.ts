@@ -54,6 +54,9 @@ export const ModelName = {
   User: 'User',
   Document: 'Document',
   DocumentMember: 'DocumentMember',
+  DocumentShare: 'DocumentShare',
+  YjsUpdate: 'YjsUpdate',
+  YjsSnapshot: 'YjsSnapshot',
   Comment: 'Comment'
 } as const
 
@@ -87,7 +90,6 @@ export type UserScalarFieldEnum = (typeof UserScalarFieldEnum)[keyof typeof User
 export const DocumentScalarFieldEnum = {
   id: 'id',
   title: 'title',
-  content: 'content',
   ownerId: 'ownerId',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
@@ -104,6 +106,38 @@ export const DocumentMemberScalarFieldEnum = {
 } as const
 
 export type DocumentMemberScalarFieldEnum = (typeof DocumentMemberScalarFieldEnum)[keyof typeof DocumentMemberScalarFieldEnum]
+
+
+export const DocumentShareScalarFieldEnum = {
+  id: 'id',
+  documentId: 'documentId',
+  role: 'role',
+  createdAt: 'createdAt'
+} as const
+
+export type DocumentShareScalarFieldEnum = (typeof DocumentShareScalarFieldEnum)[keyof typeof DocumentShareScalarFieldEnum]
+
+
+export const YjsUpdateScalarFieldEnum = {
+  id: 'id',
+  documentId: 'documentId',
+  seq: 'seq',
+  update: 'update',
+  createdAt: 'createdAt'
+} as const
+
+export type YjsUpdateScalarFieldEnum = (typeof YjsUpdateScalarFieldEnum)[keyof typeof YjsUpdateScalarFieldEnum]
+
+
+export const YjsSnapshotScalarFieldEnum = {
+  id: 'id',
+  documentId: 'documentId',
+  seq: 'seq',
+  snapshot: 'snapshot',
+  createdAt: 'createdAt'
+} as const
+
+export type YjsSnapshotScalarFieldEnum = (typeof YjsSnapshotScalarFieldEnum)[keyof typeof YjsSnapshotScalarFieldEnum]
 
 
 export const CommentScalarFieldEnum = {
@@ -133,12 +167,4 @@ export const QueryMode = {
 } as const
 
 export type QueryMode = (typeof QueryMode)[keyof typeof QueryMode]
-
-
-export const NullsOrder = {
-  first: 'first',
-  last: 'last'
-} as const
-
-export type NullsOrder = (typeof NullsOrder)[keyof typeof NullsOrder]
 
