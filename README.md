@@ -4,6 +4,16 @@ A collaborative document editor inspired by Google Docs — write together, in r
 
 Multiple users can create documents, edit them simultaneously with live cursors and carets, leave comments in the margins, and share documents with editors or viewers. All clients converge on the same state through CRDT-based synchronization, so there are no merge conflicts and no refreshes.
 
+## Screenshots
+
+### Home
+
+<img src="screenshots/Home.png" width="600" alt="Blossom home page" />
+
+### Log in
+
+<img src="screenshots/LogIn.png" width="600" alt="Blossom log in page" />
+
 ## Tech Stack
 
 | Layer | Technology |
