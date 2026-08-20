@@ -2,7 +2,7 @@
 
 A collaborative document editor inspired by Google Docs — write together, in real time.
 
-Multiple users can create documents, edit them simultaneously with live cursors and carets, leave comments in the margins, and share documents with editors or viewers. All clients converge on the same state through CRDT-based synchronization, so there are no merge conflicts and no refreshes.
+Multiple users can create documents, edit them simultaneously with live cursors and carets, leave comments, and share documents with editors or viewers. All clients converge on the same state through CRDT-based synchronization, so there are no merge conflicts and no refreshes.
 
 ## Screenshots
 
@@ -37,11 +37,11 @@ Browser
 │                         (rooms, roles, persistence)
 │                                     │
 │                                     ▼
-│                        Supabase PostgreSQL
-│                ┌───────────┬───────────────┬─────────────┐
+│                               Supabase PostgreSQL
+│                ┌───────────┬───────────────┬──────────────┐
 │                │ documents │ yjs_updates   │ yjs_snapshots│
-│                │ members   │ shares        │ comments    │
-│                └───────────┴───────────────┴─────────────┘
+│                │ members   │ shares        │ comments     │
+│                └───────────┴───────────────┴──────────────┘
 │
 ├── REST API (documents, sharing, share links, comments, auth)
 ```
@@ -127,7 +127,7 @@ Open [http://localhost:3000](http://localhost:3000). Create an account, create a
 - **Real-time collaborative editing** — CRDT-based (Yjs); concurrent edits from multiple users merge and converge automatically
 - **Live presence** — cursors, carets and selections of other collaborators, plus an online-users indicator
 - **Rich text editor** — headings, bold/italic/underline/strikethrough, lists, quotes, code blocks, links, undo/redo
-- **Comments** — threaded notes with resolve/delete, tied to documents
+- **Comments** — side-panel notes with resolve/delete, tied to documents
 - **Sharing & roles** — share by email with `EDITOR` or `VIEWER` access, or create a revocable share link (`/s/<id>`) that grants anyone with the link `VIEWER`/`EDITOR` access without an account match; only the owner can manage sharing or delete
 - **Document management** — create, rename, delete, and browse documents with last-edited info; shared documents are visually flagged
 - **Authentication** — Auth.js credentials provider with bcrypt-hashed passwords and JWT sessions
