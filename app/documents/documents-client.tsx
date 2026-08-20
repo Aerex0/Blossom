@@ -92,7 +92,7 @@ export function DocumentsClient({
 
   return (
     <div className="relative min-h-screen bg-canvas">
-      <div className="photo-backdrop" aria-hidden />
+      <div className="desk-backdrop" aria-hidden />
       <div className="photo-overlay" aria-hidden />
 
       <header className="sticky top-0 z-30 flex h-16 items-center justify-between border-b border-white/10 bg-black/30 px-4 backdrop-blur-xl sm:px-8">

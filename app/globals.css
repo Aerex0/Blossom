@@ -57,6 +57,28 @@ body::after {
   background-position: center;
 }
 
+/* Backdrop for the documents desk */
+.desk-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background-image: url("/imgs/documents-bg.jpeg");
+  background-size: cover;
+  background-position: center;
+}
+
+/* Backdrop for the editor page */
+.document-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background-image: url("/imgs/document-bg.jpeg");
+  background-size: cover;
+  background-position: center;
+}
+
 .photo-overlay {
   position: fixed;
   inset: 0;

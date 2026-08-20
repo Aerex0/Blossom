@@ -192,7 +192,7 @@ export function EditorClient({
 
   return (
     <div className="relative flex min-h-screen flex-col bg-canvas">
-      <div className="photo-backdrop" aria-hidden />
+      <div className="document-backdrop" aria-hidden />
       <div className="photo-overlay" aria-hidden />
       <TopBar
         title={title}
