@@ -150,20 +150,88 @@ Runs the Next.js app and collaboration server in separate containers with hot re
 ## Project Structure
 
 ```
-app/
-├── api/                  # REST API routes (auth, documents, sharing, share links, comments, collab token)
-├── document/[id]/        # Editor page (editor, toolbar, comments panel, share dialog)
-├── documents/            # Document list ("desk") page
-├── s/[shareId]/          # Share-link redirect route
-├── login/ signup/        # Auth pages
-├── page.tsx              # Landing page
-└── globals.css           # Theme (beach palette), paper page, editor typography
-auth.ts                   # Auth.js configuration
-server/collab-server.ts   # Standalone WebSocket collaboration server
-lib/                      # Prisma client, permissions, WS token signing, user colors
-prisma/schema.prisma      # Database schema
-components/               # Brand logo, brand link
-public/imgs/              # Background images
+.
+├── app/
+│   ├── api/
+│   │   ├── auth/
+│   │   │   ├── [...nextauth]/
+│   │   │   │   └── route.ts           # Auth.js catch-all (login, session, CSRF)
+│   │   │   └── signup/
+│   │   │       └── route.ts           # POST — register new user
+│   │   ├── collab/
+│   │   │   └── token/
+│   │   │       └── route.ts           # POST — issue short-lived JWT for WS auth
+│   │   ├── comments/
+│   │   │   └── [id]/
+│   │   │       └── route.ts           # PATCH / DELETE — update or resolve a comment
+│   │   └── documents/
+│   │       ├── [id]/
+│   │       │   ├── comments/
+│   │       │   │   └── route.ts       # GET / POST — document comments
+│   │       │   ├── share/
+│   │       │   │   ├── [userId]/
+│   │       │   │   │   └── route.ts   # DELETE — remove a specific member
+│   │       │   │   └── route.ts       # GET / PUT / DELETE — manage member roles
+│   │       │   ├── share-link/
+│   │       │   │   ├── [shareId]/
+│   │       │   │   │   └── route.ts   # GET / DELETE — resolve or revoke a share link
+│   │       │   │   └── route.ts       # POST — create a share link
+│   │       │   └── route.ts           # GET / PATCH / DELETE — single document CRUD
+│   │       └── route.ts               # GET (list) / POST (create)
+│   ├── document/
+│   │   └── [id]/
+│   │       ├── editor.tsx             # Client — Tiptap editor, toolbar, comments, share dialog
+│   │       └── page.tsx               # Server — fetches doc metadata, renders EditorClient
+│   ├── documents/
+│   │   ├── documents-client.tsx       # Client — document list, create/rename/delete
+│   │   └── page.tsx                   # Server — fetches user's documents, renders desk
+│   ├── login/
+│   │   ├── login-form.tsx             # Client — email/password form
+│   │   └── page.tsx                   # Login page wrapper
+│   ├── s/
+│   │   └── [shareId]/
+│   │       └── page.tsx               # Share-link landing — resolves link, redirects or opens doc
+│   ├── signup/
+│   │   ├── page.tsx                   # Signup page wrapper
+│   │   └── signup-form.tsx            # Client — name/email/password form
+│   ├── globals.css                    # Tailwind base, theme (beach palette), editor typography
+│   ├── layout.tsx                     # Root layout — fonts, metadata, providers
+│   ├── page.tsx                       # Landing / marketing page
+│   └── providers.tsx                  # SessionProvider wrapper for client components
+├── server/
+│   └── collab-server.ts               # Standalone WebSocket server — rooms, Yjs sync, persistence, viewer blocking
+├── lib/
+│   ├── colors.ts                      # Deterministic user color palette for presence
+│   ├── permissions.ts                 # Role ranking, owner/editor/viewer permission checks
+│   ├── prisma.ts                      # Singleton PrismaClient (with PrismaPg adapter)
+│   └── ws-token.ts                    # Sign and verify short-lived JWTs for WS auth
+├── prisma/
+│   ├── migrations/
+│   │   ├── 20260819110050_init/
+│   │   │   └── migration.sql          # Initial schema (users, documents, members, comments)
+│   │   ├── 20260820120000_yjs_persistence_snapshots_share_links/
+│   │   │   └── migration.sql          # Add yjs_updates, yjs_snapshots, document_shares
+│   │   └── migration_lock.toml        # Prisma migration lock
+│   └── schema.prisma                  # Database schema
+├── components/
+│   ├── brand-link.tsx                 # Logo link (used in headers)
+│   └── docs-logo.tsx                  # SVG logo component
+├── types/
+│   └── next-auth.d.ts                 # Auth.js type augmentation (session.user.id, session.user.role)
+├── public/
+│   └── imgs/                          # Background images for pages
+├── screenshots/                       # README screenshots (Home, LogIn, Documents, Document)
+├── auth.ts                            # Auth.js config — CredentialsProvider, JWT strategy, session callback
+├── next.config.ts                     # Next.js config
+├── tsconfig.json                      # TypeScript config (@/ path alias)
+├── prisma.config.ts                   # Prisma config (driver adapter)
+├── eslint.config.mjs                  # ESLint flat config
+├── postcss.config.mjs                 # PostCSS + Tailwind plugin
+├── Dockerfile                         # Multi-stage build (deps → builder → runner)
+├── docker-compose.yaml                # Dev — separate app and collab containers
+├── .dockerignore                      # Exclude node_modules, .next, .git, .env
+├── .env.example                       # Template for required env vars
+└── package.json                       # Dependencies, scripts
 ```
 
 ## Database Schema
