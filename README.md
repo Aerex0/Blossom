@@ -108,6 +108,14 @@ npm run dev
 
 Open [http://localhost:3000](http://localhost:3000). Create an account, create a document, and open the same document in a second browser/tab to see live collaboration.
 
+### Docker (dev)
+
+```bash
+docker compose up --build
+```
+
+Runs the Next.js app and collaboration server in separate containers with hot reload. Both read from `.env`.
+
 ## Scripts
 
 | Script | Description |

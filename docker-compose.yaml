@@ -1,0 +1,28 @@
+services:
+  app:
+    build:
+      context: .
+      target: deps
+    command: npm run dev
+    ports:
+      - "3000:3000"
+    env_file: .env
+    volumes:
+      - .:/app
+      - /app/node_modules
+      - /app/.next
+    depends_on:
+      - collab
+
+  collab:
+    build:
+      context: .
+      target: deps
+    command: npm run dev:collab
+    ports:
+      - "1234:1234"
+    env_file: .env
+    volumes:
+      - .:/app
+      - /app/node_modules
+      - /app/.next
