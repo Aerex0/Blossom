@@ -14,6 +14,14 @@ Multiple users can create documents, edit them simultaneously with live cursors 
 
 <img src="screenshots/LogIn.png" width="600" alt="Blossom log in page" />
 
+### Documents
+
+<img src="screenshots/Documents.png" width="600" alt="Blossom documents desk" />
+
+### Editor
+
+<img src="screenshots/Document.png" width="600" alt="Blossom document editor" />
+
 ## Tech Stack
 
 | Layer | Technology |
