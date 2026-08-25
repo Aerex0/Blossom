@@ -27,23 +27,22 @@ Multiple users can create documents, edit them simultaneously with live cursors 
 
 ## Architecture
 
-```
-Browser
-├── Tiptap editor ── ProseMirror ── Yjs
-│                                     │
-│            WebSocket (Yjs updates)  │
-│                                     ▼
-│                            Collaboration Server
-│                         (rooms, roles, persistence)
-│                                     │
-│                                     ▼
-│                               Supabase PostgreSQL
-│                ┌───────────┬───────────────┬──────────────┐
-│                │ documents │ yjs_updates   │ yjs_snapshots│
-│                │ members   │ shares        │ comments     │
-│                └───────────┴───────────────┴──────────────┘
-│
-├── REST API (documents, sharing, share links, comments, auth)
+```mermaid
+flowchart TB
+    subgraph Browser["Browser"]
+        UI["Tiptap Editor"] --> PM["ProseMirror"] --> Y["Yjs"]
+        API["REST API"]
+    end
+
+    WS["WebSocket"]
+    CS["Collaboration Server<br/>(rooms, roles, persistence)"]
+    DB[("Supabase PostgreSQL")]
+
+    Y <-->|"Realtime Yjs updates"| WS
+    WS <--> CS
+    CS --> DB
+
+    API -->|"Auth, documents,<br/>share links, comments"| DB
 ```
 
 Two communication paths:
