@@ -1,0 +1,32 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: google-docs-collab
+  labels:
+    app: google-docs
+    component: collab
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: google-docs
+      component: collab
+  template:
+    metadata:
+      labels:
+        app: google-docs
+        component: collab
+    spec:
+      containers:
+        - name: collab
+          image: design-google-docs-app:v4
+          imagePullPolicy: IfNotPresent
+          command: ["npm", "run", "dev:collab"]
+          ports:
+            - containerPort: 1234
+              name: ws
+          envFrom:
+            - configMapRef:
+                name: google-docs-config
+            - secretRef:
+                name: google-docs-secrets

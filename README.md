@@ -123,6 +123,38 @@ docker compose up --build
 
 Runs the Next.js app and collaboration server in separate containers with hot reload. Both read from `.env`.
 
+### Kubernetes (kind)
+
+1. Build and load the image:
+   ```bash
+   docker build -t design-google-docs-app:v4 .
+   kind load docker-image design-google-docs-app:v4
+   ```
+
+2. Create the secret (first time only):
+   ```bash
+   cp k8s/secret.yaml.example k8s/secret.yaml
+   # Edit k8s/secret.yaml — fill in AUTH_SECRET and DATABASE_URL
+   ```
+
+3. Deploy:
+   ```bash
+   kubectl apply -k k8s/
+   ```
+
+4. Verify:
+   ```bash
+   kubectl get pods
+   kubectl get services
+   ```
+
+5. Teardown:
+   ```bash
+   kubectl delete -k k8s/
+   ```
+
+App: `http://172.19.0.2:31336` · WebSocket: `ws://172.19.0.2:32653`
+
 ## Scripts
 
 | Script | Description |

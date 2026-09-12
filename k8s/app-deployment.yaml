@@ -1,0 +1,32 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: google-docs-app
+  labels:
+    app: google-docs
+    component: app
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: google-docs
+      component: app
+  template:
+    metadata:
+      labels:
+        app: google-docs
+        component: app
+    spec:
+      containers:
+        - name: app
+          image: design-google-docs-app:v4
+          imagePullPolicy: IfNotPresent
+          command: ["npm", "run", "dev"]
+          ports:
+            - containerPort: 3000
+              name: http
+          envFrom:
+            - configMapRef:
+                name: google-docs-config
+            - secretRef:
+                name: google-docs-secrets
