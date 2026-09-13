@@ -1,0 +1,26 @@
+apiVersion: chaos-mesh.org/v1alpha1
+kind: NetworkChaos
+metadata:
+  name: app-to-collab-delay
+  labels:
+    app: google-docs
+    component: chaos
+spec:
+  action: delay
+  mode: all
+  selector:
+    labelSelectors:
+      app: google-docs
+      component: app
+  delay:
+    latency: "200ms"
+    jitter: "50ms"
+    correlation: "75"
+  direction: to
+  target:
+    selector:
+      labelSelectors:
+        app: google-docs
+        component: collab
+    mode: all
+  duration: "5m"

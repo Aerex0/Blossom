@@ -1,0 +1,15 @@
+apiVersion: chaos-mesh.org/v1alpha1
+kind: PodChaos
+metadata:
+  name: kill-app-pod
+  labels:
+    app: google-docs
+    component: chaos
+spec:
+  action: pod-kill
+  mode: one
+  selector:
+    labelSelectors:
+      app: google-docs
+      component: app
+  gracePeriod: 0

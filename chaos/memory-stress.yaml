@@ -1,0 +1,18 @@
+apiVersion: chaos-mesh.org/v1alpha1
+kind: StressChaos
+metadata:
+  name: memory-stress-app
+  labels:
+    app: google-docs
+    component: chaos
+spec:
+  mode: all
+  selector:
+    labelSelectors:
+      app: google-docs
+      component: app
+  stressors:
+    memory:
+      workers: 1
+      size: "256MB"
+  duration: "5m"

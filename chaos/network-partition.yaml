@@ -1,0 +1,22 @@
+apiVersion: chaos-mesh.org/v1alpha1
+kind: NetworkChaos
+metadata:
+  name: app-collab-partition
+  labels:
+    app: google-docs
+    component: chaos
+spec:
+  action: partition
+  mode: all
+  selector:
+    labelSelectors:
+      app: google-docs
+      component: app
+  direction: both
+  target:
+    selector:
+      labelSelectors:
+        app: google-docs
+        component: collab
+    mode: all
+  duration: "3m"
