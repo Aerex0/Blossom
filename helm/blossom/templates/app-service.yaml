@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ .Values.app.name }}
+  labels:
+    {{- include "blossom.appLabels" . | nindent 4 }}
+spec:
+  type: NodePort
+  selector:
+    {{- include "blossom.appSelector" . | nindent 4 }}
+  ports:
+    - port: {{ .Values.app.containerPort }}
+      targetPort: {{ .Values.app.containerPort }}
+      nodePort: {{ .Values.app.nodePort }}
+      name: http

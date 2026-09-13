@@ -1,0 +1,29 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Values.collab.name }}
+  labels:
+    {{- include "blossom.collabLabels" . | nindent 4 }}
+spec:
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      {{- include "blossom.collabSelector" . | nindent 6 }}
+  template:
+    metadata:
+      labels:
+        {{- include "blossom.collabLabels" . | nindent 8 }}
+    spec:
+      containers:
+        - name: collab
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          command: {{ .Values.collab.command | toYaml | nindent 12 }}
+          ports:
+            - containerPort: {{ .Values.collab.containerPort }}
+              name: ws
+          envFrom:
+            - configMapRef:
+                name: {{ .Values.app.name }}-config
+            - secretRef:
+                name: {{ .Values.app.name }}-secrets

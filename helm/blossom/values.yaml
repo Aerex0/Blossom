@@ -1,0 +1,30 @@
+replicaCount: 1
+
+image:
+  repository: design-google-docs-app
+  tag: "v4"
+  pullPolicy: IfNotPresent
+
+app:
+  name: google-docs-app
+  containerPort: 3000
+  nodePort: 31336
+  command: ["npm", "run", "dev"]
+
+collab:
+  name: google-docs-collab
+  containerPort: 1234
+  nodePort: 32653
+  command: ["npm", "run", "dev:collab"]
+
+config:
+  collabPort: "1234"
+  nextPublicWsUrl: "ws://172.19.0.2:32653"
+  authUrl: "http://172.19.0.2:31336"
+
+secret:
+  authSecret: ""
+  databaseUrl: ""
+
+labels:
+  app: google-docs

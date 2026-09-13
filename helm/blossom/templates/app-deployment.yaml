@@ -1,0 +1,29 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Values.app.name }}
+  labels:
+    {{- include "blossom.appLabels" . | nindent 4 }}
+spec:
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      {{- include "blossom.appSelector" . | nindent 6 }}
+  template:
+    metadata:
+      labels:
+        {{- include "blossom.appLabels" . | nindent 8 }}
+    spec:
+      containers:
+        - name: app
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          command: {{ .Values.app.command | toYaml | nindent 12 }}
+          ports:
+            - containerPort: {{ .Values.app.containerPort }}
+              name: http
+          envFrom:
+            - configMapRef:
+                name: {{ .Values.app.name }}-config
+            - secretRef:
+                name: {{ .Values.app.name }}-secrets
